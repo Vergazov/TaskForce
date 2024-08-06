@@ -1,7 +1,8 @@
 {
   "autoload": {
     "psr-4": {
-      "TaskService\\": "src/"
+      "AvailableActions\\": "src/AvailableActions",
+      "CustomExceptions\\": "src/CustomExceptions"
     }
   }
 }

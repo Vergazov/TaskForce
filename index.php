@@ -2,13 +2,19 @@
 
 require_once 'vendor/autoload.php';
 
-use TaskService\Task;
+use AvailableActions\AvailableActions;
+use CustomExceptions\AvailableActionsException;
 
-$task = new Task('new', 10);
 
-$res = $task->statusAllowedActions('in-progress');
+try {
+    $strategy = new AvailableActions(AvailableActions::STATUS_IN_PROGRESS,3,1);
 
-dump($res);
+}catch (AvailableActionsException $e){
+    die($e->getMessage());
+}
+
+dump($strategy->getAvailableActions(AvailableActions::ROLE_PERFORMER,1));
+
 
 function dump($data): void
 {

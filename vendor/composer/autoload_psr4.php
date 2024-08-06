@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'TaskService\\' => array($baseDir . '/src'),
+    'CustomExceptions\\' => array($baseDir . '/src/CustomExceptions'),
+    'AvailableActions\\' => array($baseDir . '/src/AvailableActions'),
 );
