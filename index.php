@@ -3,18 +3,16 @@
 require_once 'vendor/autoload.php';
 
 use AvailableActions\AvailableActions;
-use CustomExceptions\AvailableActionsException;
+use CustomExceptions\StatusActionException;
 
 
 try {
-    $strategy = new AvailableActions(AvailableActions::STATUS_IN_PROGRESS,3,1);
+    $strategy = new AvailableActions('in-progress',3,1);
 
-}catch (AvailableActionsException $e){
+    dump($strategy->getAvailableActions('performer',1));
+}catch (StatusActionException $e){
     die($e->getMessage());
 }
-
-dump($strategy->getAvailableActions(AvailableActions::ROLE_PERFORMER,1));
-
 
 function dump($data): void
 {
