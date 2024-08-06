@@ -1,0 +1,8 @@
+{
+  "autoload": {
+    "psr-4": {
+      "AvailableActions\\": "src/AvailableActions",
+      "CustomExceptions\\": "src/CustomExceptions"
+    }
+  }
+}
