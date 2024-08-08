@@ -2,7 +2,8 @@
   "autoload": {
     "psr-4": {
       "AvailableActions\\": "src/AvailableActions",
-      "CustomExceptions\\": "src/CustomExceptions"
+      "CustomExceptions\\": "src/CustomExceptions",
+      "Converters\\": "src/Converters"
     }
   }
 }

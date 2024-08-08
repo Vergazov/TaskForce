@@ -10,6 +10,7 @@ class ComposerStaticInit33b3b4c69f68c4ffc93ba6df6663ec13
         'C' => 
         array (
             'CustomExceptions\\' => 17,
+            'Converters\\' => 11,
         ),
         'A' => 
         array (
@@ -21,6 +22,10 @@ class ComposerStaticInit33b3b4c69f68c4ffc93ba6df6663ec13
         'CustomExceptions\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/CustomExceptions',
+        ),
+        'Converters\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Converters',
         ),
         'AvailableActions\\' => 
         array (

@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/AvailableActions" isTestSource="false" packagePrefix="AvailableActions\" />
       <sourceFolder url="file://$MODULE_DIR$/src/CustomExceptions" isTestSource="false" packagePrefix="CustomExceptions\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Converters" isTestSource="false" packagePrefix="Converters\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CustomExceptions\\' => array($baseDir . '/src/CustomExceptions'),
+    'Converters\\' => array($baseDir . '/src/Converters'),
     'AvailableActions\\' => array($baseDir . '/src/AvailableActions'),
 );
