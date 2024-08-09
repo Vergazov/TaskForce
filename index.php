@@ -1,11 +1,10 @@
 <?php
 
+use Converters\CsvSqlConverter;
+
 require_once 'vendor/autoload.php';
 require_once 'helpers.php';
 
-use AvailableActions\AvailableActions;
-use CustomExceptions\StatusActionException;
-use Converters\CsvToSqlConverter;
 
 
 //try {
@@ -16,15 +15,7 @@ use Converters\CsvToSqlConverter;
 //    die($e->getMessage());
 //}
 
-//$file = new SplFileObject('data/categories.csv');
-//
-//while($file->valid()){
-//    dump($file->fgetcsv());
-//}
-//echo memory_get_usage() . PHP_EOL;
-$res = new CsvToSqlConverter('data/categories.csv','dump.sql');
-//$res->convert();
-$res->write();
-dump($res->csvFileContent);
-//echo memory_get_usage() . PHP_EOL;
+$converter = new CsvSqlConverter('data/csv');
+$result = $converter->convertFiles('data/sql');
+
 
