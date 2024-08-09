@@ -60,7 +60,7 @@ class CsvSqlConverter
         }
 
         $tableName = $file->getBasename('.csv');
-        $sqlContent = $this->getSqlCOntent($tableName, $columns, $values);
+        $sqlContent = $this->getSqlContent($tableName, $columns, $values);
 
         return $this->saveSqlContent($tableName, $outputDirectory, $sqlContent);
     }
