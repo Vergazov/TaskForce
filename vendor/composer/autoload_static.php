@@ -94,8 +94,14 @@ class ComposerStaticInit72ac0b8252822528c034bbf39a2eb746
         ),
         'C' => 
         array (
+            'CustomExceptions\\' => 17,
+            'Converters\\' => 11,
             'Codeception\\Extension\\' => 22,
             'Codeception\\' => 12,
+        ),
+        'A' => 
+        array (
+            'AvailableActions\\' => 17,
         ),
     );
 
@@ -218,8 +224,8 @@ class ComposerStaticInit72ac0b8252822528c034bbf39a2eb746
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\EventDispatcher\\' => 
         array (
@@ -257,15 +263,27 @@ class ComposerStaticInit72ac0b8252822528c034bbf39a2eb746
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'CustomExceptions\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/CustomExceptions',
+        ),
+        'Converters\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Converters',
+        ),
         'Codeception\\Extension\\' => 
         array (
             0 => __DIR__ . '/..' . '/codeception/codeception/ext',
         ),
         'Codeception\\' => 
         array (
-            0 => __DIR__ . '/..' . '/codeception/stub/src',
-            1 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
+            0 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
+            1 => __DIR__ . '/..' . '/codeception/stub/src',
             2 => __DIR__ . '/..' . '/codeception/verify/src/Codeception',
+        ),
+        'AvailableActions\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/AvailableActions',
         ),
     );
 
