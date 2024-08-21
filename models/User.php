@@ -2,103 +2,117 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property int $city_id
+ * @property string $role
+ * @property string|null $birthdate
+ * @property string|null $phone
+ * @property string|null $telegram
+ * @property string|null $info
+ * @property string|null $avatar
+ * @property int|null $failed_tasks
+ *
+ * @property City $city
+ * @property PerformerSpecialization[] $performerSpecializations
+ * @property Task[] $tasks
+ * @property Task[] $tasks0
+ */
+class User extends ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName(): string
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules(): array
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['name', 'email', 'password', 'city_id', 'role'], 'required'],
+            [['city_id', 'failed_tasks'], 'integer'],
+            [['birthdate'], 'safe'],
+            [['info'], 'string'],
+            [['name', 'password', 'avatar'], 'string', 'max' => 255],
+            [['email'], 'string', 'max' => 100],
+            [['role', 'phone'], 'string', 'max' => 30],
+            [['telegram'], 'string', 'max' => 50],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+        ];
     }
 
     /**
-     * Finds user by username
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'city_id' => 'City ID',
+            'role' => 'Role',
+            'birthdate' => 'Birthdate',
+            'phone' => 'Phone',
+            'telegram' => 'Telegram',
+            'info' => 'Info',
+            'avatar' => 'Avatar',
+            'failed_tasks' => 'Failed Tasks',
+        ];
+    }
+
+    /**
+     * Gets query for [[City]].
      *
-     * @param string $username
-     * @return static|null
+     * @return ActiveQuery
      */
-    public static function findByUsername($username)
+    public function getCity(): ActiveQuery
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
+     * Gets query for [[PerformerSpecializations]].
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return ActiveQuery
      */
-    public function validatePassword($password)
+    public function getPerformerSpecializations(): ActiveQuery
     {
-        return $this->password === $password;
+        return $this->hasMany(PerformerSpecialization::class, ['performer_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tasks]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTasks(): ActiveQuery
+    {
+        return $this->hasMany(Task::class, ['author_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tasks0]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTasks0(): ActiveQuery
+    {
+        return $this->hasMany(Task::class, ['performer_id' => 'id']);
     }
 }
