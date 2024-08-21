@@ -3,7 +3,7 @@
 namespace AvailableActions;
 
 
-use CustomExceptions\AvailableActionsException;
+use CustomExceptions\StatusActionException;
 
 class AvailableActions
 {
@@ -24,6 +24,7 @@ class AvailableActions
      * @param string $status
      * @param int $clientId
      * @param int|null $performerId
+     * @throws StatusActionException
      */
     public function __construct(string $status, int $clientId, ?int $performerId = null)
     {
@@ -36,6 +37,7 @@ class AvailableActions
     /**
      * @param string $status
      * @return void
+     * @throws StatusActionException
      */
     public function setStatus(string $status): void
     {
@@ -47,9 +49,10 @@ class AvailableActions
             self::STATUS_FAIL,
         ];
 
-        if (in_array($status, $availableStatuses)) {
-            $this->status = $status;
+        if (!in_array($status, $availableStatuses)) {
+            throw new StatusActionException("Неизвестный статус: $status");
         }
+        $this->status = $status;
     }
 
     /**
@@ -57,9 +60,12 @@ class AvailableActions
      * @param string $role
      * @param int $id
      * @return array
+     * @throws StatusActionException
      */
     public function getAvailableActions(string $role, int $id): array
     {
+        $this->checkRole($role);
+
         $statusActions = $this->statusAllowedActions()[$this->status];
         $roleActions = $this->roleAllowedActions()[$role];
 
@@ -70,6 +76,23 @@ class AvailableActions
         });
 
         return array_values($allowedActions);
+    }
+
+    /**
+     * @param string $role
+     * @return void
+     * @throws StatusActionException
+     */
+    private function checkRole(string $role):void
+    {
+        $availableRoles = [
+            self::ROLE_PERFORMER,
+            self::ROLE_CLIENT,
+        ];
+
+        if(!in_array($role, $availableRoles)) {
+            throw new StatusActionException("Неизвестная роль: $role");
+        }
     }
 
     /**
