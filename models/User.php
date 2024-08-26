@@ -91,9 +91,9 @@ class User extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getPerformerSpecializations(): ActiveQuery
+    public function getSpecializations(): ActiveQuery
     {
-        return $this->hasMany(PerformerSpecialization::class, ['performer_id' => 'id']);
+        return $this->hasMany(Specialization::class, ['id' => 'specialization_id'])->viaTable('performer_specialization', ['performer_id' => 'id']);
     }
 
     /**

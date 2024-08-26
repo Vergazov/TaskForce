@@ -2,7 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Specialization;
+use app\models\Task;
+use app\models\User;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -61,6 +65,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $task = Task::find()->where(1)->joinWith('responses')->one();
+        $responses = $task->responses;
+        dd($task);
+
         return $this->render('index');
     }
 
