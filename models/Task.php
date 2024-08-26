@@ -127,12 +127,18 @@ class Task extends ActiveRecord
         return $this->hasMany(Response::class, ['task_id' => 'id']);
     }
 
+    public function getCheapestResponses()
+    {
+        return $this->getResponses()->where(['<','price', 1000]);
+
+    }
+
     /**
      * Gets query for [[Taskfiles]].
      *
      * @return ActiveQuery
      */
-    public function getTaskfiles(): ActiveQuery
+    public function getTaskFiles(): ActiveQuery
     {
         return $this->hasMany(TaskFile::class, ['task_id' => 'id']);
     }

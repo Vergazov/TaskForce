@@ -51,8 +51,8 @@ class Specialization extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getPerformerSpecializations(): ActiveQuery
+    public function getPerformers(): ActiveQuery
     {
-        return $this->hasMany(PerformerSpecialization::class, ['specialization_id' => 'id']);
+        return $this->hasMany(User::class, ['id' => 'performer_id'])->viaTable('performer_specialization', ['specialization_id' => 'id']);
     }
 }
