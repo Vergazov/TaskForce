@@ -42,6 +42,11 @@ class m240826_164727_create_user_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey(
+            'fk-user-city_id',
+            'user'
+        );
+
         $this->dropTable('{{%user}}');
     }
 }

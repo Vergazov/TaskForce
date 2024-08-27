@@ -68,6 +68,26 @@ class m240826_183015_create_task_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey(
+            'fk-task-category_id',
+            'task'
+        );
+
+        $this->dropForeignKey(
+            'fk-task-city_id',
+            'task'
+        );
+
+        $this->dropForeignKey(
+            'fk-task-author_id',
+            'task'
+        );
+
+        $this->dropForeignKey(
+            'fk-task-performer_id',
+            'task'
+        );
+
         $this->dropTable('{{%task}}');
     }
 }

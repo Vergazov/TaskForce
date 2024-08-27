@@ -33,6 +33,11 @@ class m240826_194832_create_task_file_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey(
+            'fk-task_file-task_id',
+            'task_file'
+        );
+
         $this->dropTable('{{%task_file}}');
     }
 }
