@@ -10,7 +10,7 @@ class TaskController extends Controller
     public function actionIndex()
     {
         $tasks = Task::find()
-            ->where(['status' => '1'])
+            ->where(['status' => 1])
             ->with('category', 'city', 'author', 'performer')
             ->all();
 

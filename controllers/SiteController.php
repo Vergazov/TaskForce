@@ -65,10 +65,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $task = Task::find()->where(1)->joinWith('responses')->one();
-        $responses = $task->responses;
-        dd($task);
-
         return $this->render('index');
     }
 

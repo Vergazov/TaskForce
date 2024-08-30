@@ -22,8 +22,9 @@ class m240826_183015_create_task_table extends Migration
             'budget' => $this->integer(),
             'deadline' => $this->date(),
             'author_id' => $this->integer()->notNull(),
-            'performer_id' => $this->integer()->notNull(),
-            'status' => $this->string(50)->notNull(),
+            'performer_id' => $this->integer(),
+            'status_id' => $this->integer()->notNull()->defaultValue(0),
+            'date_add' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(
@@ -58,6 +59,15 @@ class m240826_183015_create_task_table extends Migration
             'task',
             'performer_id',
             'user',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-task-status_id',
+            'task',
+            'status_id',
+            'status',
             'id',
             'CASCADE'
         );

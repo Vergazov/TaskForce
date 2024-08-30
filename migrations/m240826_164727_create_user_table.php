@@ -18,7 +18,7 @@ class m240826_164727_create_user_table extends Migration
             'email' => $this->string(),
             'password' => $this->string(),
             'city_id' => $this->integer(),
-            'role' => $this->string(),
+            'role_id' => $this->integer(),
             'birthdate' => $this->date(),
             'phone' => $this->string(),
             'telegram' => $this->string(),
@@ -32,6 +32,15 @@ class m240826_164727_create_user_table extends Migration
             'user',
             'city_id',
             'city',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-user-role_id',
+            'user',
+            'role_id',
+            'role',
             'id',
             'CASCADE'
         );
