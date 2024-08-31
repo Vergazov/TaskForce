@@ -87,6 +87,16 @@ class User extends ActiveRecord
     }
 
     /**
+     * Gets query for [[Role]].
+     *
+     * @return ActiveQuery
+     */
+    public function getRole(): ActiveQuery
+    {
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
+    }
+
+    /**
      * Gets query for [[PerformerSpecializations]].
      *
      * @return ActiveQuery
