@@ -23,8 +23,8 @@ class m240826_183015_create_task_table extends Migration
             'deadline' => $this->date(),
             'author_id' => $this->integer()->notNull(),
             'performer_id' => $this->integer(),
-            'status_id' => $this->integer()->notNull()->defaultValue(0),
-            'date_add' => $this->dateTime(),
+            'status_id' => $this->integer(),
+            'dt_add' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(

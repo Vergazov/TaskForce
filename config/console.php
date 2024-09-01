@@ -32,8 +32,7 @@ $config = [
         'fixture' => [ // Fixture generation command line.
             'class' => 'yii\faker\FixtureController',
             'templatePath' => '@tests/unit/fixtures/templates',
-            'fixtureDataPath' => '@tests/unit/fixtures',
-//            'namespace' => 'tests\unit\fixtures',
+            'fixtureDataPath' => '@tests/unit/fixtures/data',
         ],
     ],
 
