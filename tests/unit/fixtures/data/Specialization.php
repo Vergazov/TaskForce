@@ -10,10 +10,4 @@ return [
     'Specialization2' => [
         'name' => 'Оператор ПК',
     ],
-    'Specialization3' => [
-        'name' => 'Репетитор по Англиийскому',
-    ],
-    'Specialization4' => [
-        'name' => 'Laravel developer',
-    ],
 ];

@@ -1,10 +1,9 @@
 <?php
 
-namespace common\fixtures\templates;
+namespace unit\fixtures\templates;
 
 use app\models\City;
 use app\models\Role;
-use app\models\User;
 use Faker\Generator;
 use Yii;
 

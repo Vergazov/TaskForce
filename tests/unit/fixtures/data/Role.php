@@ -6,5 +6,5 @@ return [
     ],
     'Role1' => [
         'name' => 'client',
-    ]
+    ],
 ];

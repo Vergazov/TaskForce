@@ -1,6 +1,6 @@
 <?php
 
-namespace common\fixtures\templates;
+namespace unit\fixtures\templates;
 
 use app\models\Category;
 use app\models\City;
@@ -23,5 +23,5 @@ return [
     'author_id' => $faker->numberBetween(1, User::find()->count()),
     'performer_id' => $faker->numberBetween(1, User::find()->count()),
     'status_id' => $faker->numberBetween(1, Status::find()->count()),
-    'date_add' => $faker->iso8601(),
+    'dt_add' => $faker->iso8601(),
 ];
