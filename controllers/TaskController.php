@@ -2,19 +2,27 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\Task;
+use Yii;
+use yii\data\Pagination;
 use yii\web\Controller;
 
 class TaskController extends Controller
 {
     public function actionIndex()
     {
-        $tasks = Task::find()
-            ->where(['status_id' => 1])
-            ->with('category', 'city', 'author', 'performer')
-            ->all();
+        $task = new Task;
+        $task->load(Yii::$app->request->post());
+//        dd(Yii::$app->request->post());
+        $taskQuery = $task->getSearchQuery();
+//        dd($taskQuery);
+        $countQuery = clone $taskQuery;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 15]);
+        $tasks = $taskQuery->offset($pages->offset)->limit($pages->limit)->all();
+        $categories = Category::find()->all();
 
-        return $this->render('index', ['tasks' => $tasks]);
+        return $this->render('index', ['tasks' => $tasks, 'pages' => $pages, 'categories' => $categories, 'task' => $task]);
     }
 
 }

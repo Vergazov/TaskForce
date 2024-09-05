@@ -1,33 +1,40 @@
 <?php
 /** @var yii\web\View $this */
-/** @var  $tasks */
 
+/** @var  $tasks */
+/** @var  $categories */
+
+/** @var  $task */
+
+use yii\helpers\ArrayHelper;
 use yii\helpers\BaseStringHelper;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Просмотр новых заданий';
 ?>
 <main class="main-content container">
-
     <div class="left-column">
         <h3 class="head-main head-task">Новые задания</h3>
         <?php foreach ($tasks as $task): ?>
-        <div class="task-card">
-            <div class="header-task">
-                <a  href="#" class="link link--block link--big"><?=Html::encode($task->title)?></a>
-                <p class="price price--task"><?=$task->budget?></p>
+            <div class="task-card">
+                <div class="header-task">
+                    <a href="#" class="link link--block link--big"><?= Html::encode($task->title) ?></a>
+                    <p class="price price--task"><?= $task->budget ?></p>
+                </div>
+                <p class="info-text"><span
+                            class="current-time"><?= Yii::$app->formatter->asRelativeTime($task->dt_add) ?> </span>назад
+                </p>
+                <p class="task-text"><?= Html::encode(BaseStringHelper::truncate($task->description, 200)) ?>
+                </p>
+                <div class="footer-task">
+                    <?php if ($task->coordinates): ?>
+                        <p class="info-text town-text"><?= $task->coordinates ?></p>
+                    <?php endif; ?>
+                    <p class="info-text category-text"><?= $task->category->name ?></p>
+                    <a href="#" class="button button--black">Смотреть Задание</a>
+                </div>
             </div>
-            <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($task->dt_add)?> </span>назад</p>
-            <p class="task-text"><?=Html::encode(BaseStringHelper::truncate($task->description,200))?>
-            </p>
-            <div class="footer-task">
-                <?php if($task->coordinates): ?>
-                <p class="info-text town-text"><?=$task->coordinates?></p>
-                <?php endif; ?>
-                <p class="info-text category-text"><?=$task->category->name?></p>
-                <a href="#" class="button button--black">Смотреть Задание</a>
-            </div>
-        </div>
         <?php endforeach; ?>
 
         <div class="pagination-wrapper">
@@ -53,38 +60,33 @@ $this->title = 'Просмотр новых заданий';
     <div class="right-column">
         <div class="right-card black">
             <div class="search-form">
-                <form>
-                    <h4 class="head-card">Категории</h4>
-                    <div class="form-group">
-                        <div class="checkbox-wrapper">
-                            <label class="control-label" for="сourier-services">
-                                <input type="checkbox" id="сourier-services" checked>
-                                Курьерские услуги</label>
-                            <label class="control-label" for="cargo-transportation">
-                                <input id="cargo-transportation" type="checkbox">
-                                Грузоперевозки</label>
-                            <label class="control-label" for="translations">
-                                <input id="translations" type="checkbox">
-                                Переводы</label>
-                        </div>
-                    </div>
-                    <h4 class="head-card">Дополнительно</h4>
-                    <div class="form-group">
-                        <label class="control-label" for="without-performer">
-                            <input id="without-performer" type="checkbox" checked>
-                            Без исполнителя</label>
-                    </div>
+                <?php $form = ActiveForm::begin(); ?>
+                <h4 class="head-card">Категории</h4>
+                <div class="checkbox-wrapper">
+                    <?= Html::activeCheckboxList($task, 'category_id', ArrayHelper::map($categories, 'id', 'name'),
+                        ['tag' => null, 'itemOptions' => ['labelOptions' => ['class' => 'control-label']]]) ?>
+                </div>
+                <h4 class="head-card">Дополнительно</h4>
+                <div class="checkbox-wrapper">
+                    <?= $form->field($task, 'noResponses')->checkbox(['labelOptions' => ['class' => 'control-label']]) ?>
+                </div>
+                <div class="checkbox-wrapper">
+                    <?= $form->field($task, 'noLocation')->checkbox(['labelOptions' => ['class' => 'control-label']]) ?>
+
                     <h4 class="head-card">Период</h4>
-                    <div class="form-group">
-                        <label for="period-value"></label>
-                        <select id="period-value">
-                            <option>1 час</option>
-                            <option>12 часов</option>
-                            <option>24 часа</option>
-                        </select>
-                    </div>
-                    <input type="submit" class="button button--blue" value="Искать">
-                </form>
+                    <?= $form->field($task, 'filterPeriod', ['template' => '{input}'])
+                        ->dropDownList(
+                            [
+                                '3600' => 'За последний час',
+                                '86400' => 'За сутки',
+                                '604800' => 'За неделю'],
+                            [
+                                'prompt' => 'Выбрать'
+                            ]
+                        ) ?>
+                </div>
+                <input type="submit" class="button button--blue" value="Искать">
+                <?php ActiveForm::end() ?>
             </div>
         </div>
     </div>

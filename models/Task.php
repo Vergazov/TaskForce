@@ -30,6 +30,9 @@ use yii\db\ActiveRecord;
  */
 class Task extends ActiveRecord
 {
+    public $noResponses;
+    public $noLocation;
+    public $filterPeriod;
     /**
      * {@inheritdoc}
      */
@@ -44,6 +47,8 @@ class Task extends ActiveRecord
     public function rules(): array
     {
         return [
+            [['noResponses', 'noLocation'], 'boolean'],
+            [['filterPeriod'], 'number'],
             [['title', 'description', 'category_id', 'city_id', 'author_id', 'performer_id', 'status'], 'required'],
             [['description'], 'string'],
             [['category_id', 'city_id', 'budget', 'author_id', 'performer_id'], 'integer'],
@@ -74,6 +79,9 @@ class Task extends ActiveRecord
             'author_id' => 'Author ID',
             'performer_id' => 'Performer ID',
             'status' => 'Status',
+            'noResponses' => 'Без откликов',
+            'noLocation' => 'Удаленная работа',
+            'filterPeriod' => 'Период',
         ];
     }
 
@@ -127,12 +135,6 @@ class Task extends ActiveRecord
         return $this->hasMany(Response::class, ['task_id' => 'id']);
     }
 
-    public function getCheapestResponses()
-    {
-        return $this->getResponses()->where(['<','price', 1000]);
-
-    }
-
     /**
      * Gets query for [[Taskfiles]].
      *
@@ -141,5 +143,26 @@ class Task extends ActiveRecord
     public function getTaskFiles(): ActiveQuery
     {
         return $this->hasMany(TaskFile::class, ['task_id' => 'id']);
+    }
+
+    public function getSearchQuery()
+    {
+        $query = self::find();
+
+        $query->where(['status_id' => Status::STATUS_ACTIVE]);
+
+        $query->andFilterWhere(['category_id' => $this->category_id]);
+
+        if($this->noLocation) {
+            $query->andWhere('coordinates is NULL');
+        }
+        if($this->noResponses){
+            $query->joinWith('responses r')->andWhere(['r.id' => null]);
+        }
+        if($this->filterPeriod){
+            $query->andWhere('UNIX_TIMESTAMP(task.dt_add) > UNIX_TIMESTAMP() - :period',['period' => $this->filterPeriod]);
+        }
+
+        return $query->orderBy('dt_add DESC');
     }
 }
