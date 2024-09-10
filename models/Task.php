@@ -54,7 +54,7 @@ class Task extends ActiveRecord
             [['category_id', 'city_id', 'budget', 'author_id', 'performer_id'], 'integer'],
             [['deadline'], 'safe'],
             [['title', 'coordinates'], 'string', 'max' => 100],
-            [['status'], 'string', 'max' => 50],
+            [['status_id'], 'exists', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['author_id' => 'id']],
@@ -78,7 +78,7 @@ class Task extends ActiveRecord
             'deadline' => 'Deadline',
             'author_id' => 'Author ID',
             'performer_id' => 'Performer ID',
-            'status' => 'Status',
+            'status_id' => 'Status',
             'noResponses' => 'Без откликов',
             'noLocation' => 'Удаленная работа',
             'filterPeriod' => 'Период',
@@ -143,6 +143,11 @@ class Task extends ActiveRecord
     public function getTaskFiles(): ActiveQuery
     {
         return $this->hasMany(TaskFile::class, ['task_id' => 'id']);
+    }
+
+    public function getStatus(): ActiveQuery
+    {
+        return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
     public function getSearchQuery()

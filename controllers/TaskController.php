@@ -27,6 +27,12 @@ class TaskController extends Controller
 
     public function actionView($id)
     {
-        return $this->render('view', []);
+        $task = Task::find()
+            ->with('category','status','responses.author')
+            ->where(['id' => $id])
+            ->one();
+//        dd($task);
+
+        return $this->render('view', ['task' => $task]);
     }
 }
