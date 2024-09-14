@@ -125,4 +125,9 @@ class User extends ActiveRecord
     {
         return $this->hasMany(Task::class, ['performer_id' => 'id']);
     }
+
+    public function getResponses(): ActiveQuery
+    {
+        return $this->hasMany(Response::class, ['author_id' => 'id']);
+    }
 }

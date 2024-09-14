@@ -32,7 +32,7 @@ class TaskController extends Controller
             ->where(['id' => $id])
             ->one();
 //        dd($task);
-
         return $this->render('view', ['task' => $task]);
     }
+
 }

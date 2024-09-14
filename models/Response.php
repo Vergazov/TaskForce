@@ -34,12 +34,12 @@ class Response extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['performer_comment', 'creator_comment'], 'string'],
+            [['performer_comment', 'feedback'], 'string'],
             [['price', 'task_id', 'rating'], 'integer'],
             [['task_id'], 'required'],
-            [['user_id'], 'required'],
+            [['author_id'], 'required'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -53,8 +53,8 @@ class Response extends ActiveRecord
             'performer_comment' => 'Performer Comment',
             'price' => 'Price',
             'task_id' => 'Task ID',
-            'user_id' => 'User ID',
-            'creator_comment' => 'Creator Comment',
+            'author_id' => 'User ID',
+            'feedback' => 'Creator Comment',
             'rating' => 'Rating',
         ];
     }
@@ -71,6 +71,6 @@ class Response extends ActiveRecord
 
     public function getAuthor(): ActiveQuery
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 }

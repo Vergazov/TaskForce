@@ -34,7 +34,7 @@ $this->title = 'Просмотр задания';
                     <p class="reviews">2 отзыва</p>
                 </div>
                 <p class="response-message">
-                    <?=Html::encode($response->performer_comment);?>
+                    <?=Html::encode($response->performer_comment);    ?>
                 </p>
 
             </div>
