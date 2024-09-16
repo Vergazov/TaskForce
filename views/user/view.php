@@ -3,6 +3,7 @@
 /** @var  $user */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'Профиль пользователя';
 
@@ -45,7 +46,7 @@ $this->title = 'Профиль пользователя';
             <img class="customer-photo" src="img/man-coat.png" width="120" height="127" alt="Фото заказчиков">
             <div class="feedback-wrapper">
                 <p class="feedback"><?=Html::encode($response->feedback)?></p>
-                <p class="task">Задание «<a href="#" class="link link--small">Повесить полочку</a>» выполнено</p>
+                <p class="task">Задание «<a href="<?=Url::to(['task/view','id' => $response->task->id])?>" class="link link--small"><?=$response->task->title?></a>» <?=$response->task->status->name?></p>
             </div>
             <div class="feedback-wrapper">
                 <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
@@ -59,7 +60,7 @@ $this->title = 'Профиль пользователя';
             <h4 class="head-card">Статистика исполнителя</h4>
             <dl class="black-list">
                 <dt>Всего заказов</dt>
-                <dd>4 выполнено, 0 провалено</dd>
+                <dd><?=$user->getCompletedTasks($user->id)?>, 0 провалено</dd>
                 <dt>Место в рейтинге</dt>
                 <dd>25 место</dd>
                 <dt>Дата регистрации</dt>

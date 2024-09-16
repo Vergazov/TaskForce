@@ -3,6 +3,7 @@
 /** @var  $task */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'Просмотр задания';
 ?>
@@ -28,7 +29,7 @@ $this->title = 'Просмотр задания';
         <div class="response-card">
             <img class="customer-photo" src="" width="146" height="156" alt="Фото заказчиков">
             <div class="feedback-wrapper">
-                <a href="#" class="link link--block link--big"><?=Html::encode($response->author->name)?></a>
+                <a href="<?=Url::to(['user/view','id' => $response->author_id])?>" class="link link--block link--big"><?=Html::encode($response->author->name)?></a>
                 <div class="response-wrapper">
                     <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
                     <p class="reviews">2 отзыва</p>

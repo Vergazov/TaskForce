@@ -116,6 +116,11 @@ class User extends ActiveRecord
         return $this->hasMany(Task::class, ['author_id' => 'id']);
     }
 
+    public function getCompletedTasks($id)
+    {
+        return $this->getTasks()->where(['performer_id' => $id, 'status_id' => Status::STATUS_ACTIVE])->count();
+    }
+
     /**
      * Gets query for [[Tasks0]].
      *
