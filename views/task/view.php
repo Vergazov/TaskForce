@@ -29,13 +29,13 @@ $this->title = 'Просмотр задания';
         <div class="response-card">
             <img class="customer-photo" src="" width="146" height="156" alt="Фото заказчиков">
             <div class="feedback-wrapper">
-                <a href="<?=Url::to(['user/view','id' => $response->author_id])?>" class="link link--block link--big"><?=Html::encode($response->author->name)?></a>
+                <a href="<?=Url::to(['user/view','id' => $response->user_id])?>" class="link link--block link--big"><?=Html::encode($response->user->name)?></a>
                 <div class="response-wrapper">
                     <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                    <p class="reviews">2 отзыва</p>
+                    <p class="reviews"><?=$response->user->getFeedbackCount($response->user->id)?> отзыва</p>
                 </div>
                 <p class="response-message">
-                    <?=Html::encode($response->performer_comment)?>
+                    <?=Html::encode($response->comment)?>
                 </p>
 
             </div>
@@ -57,7 +57,7 @@ $this->title = 'Просмотр задания';
                 <dt>Категория</dt>
                 <dd><?= $task->category->name ?></dd>
                 <dt>Дата публикации</dt>
-                <dd><?= Yii::$app->formatter->asRelativeTime($task->dt_add,) ?></dd>
+                <dd><?= Yii::$app->formatter->asRelativeTime($task->dt_add) ?></dd>
                 <dt>Срок выполнения</dt>
                 <dd><?= Yii::$app->formatter->asDate($task->expire_dt,'long') ?></dd>
                 <dt>Статус</dt>

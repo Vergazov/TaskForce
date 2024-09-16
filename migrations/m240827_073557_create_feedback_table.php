@@ -5,25 +5,25 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%response}}`.
  */
-class m240827_073558_create_response_table extends Migration
+class m240827_073557_create_feedback_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%response}}', [
+        $this->createTable('{{%feedback}}', [
             'id' => $this->primaryKey(),
-            'price' => $this->integer(),
             'comment' => $this->string(),
+            'rating' => $this->integer(),
             'task_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'dt_add' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(
-            'fk-response-task_id',
-            'response',
+            'fk-feedback-task_id',
+            'feedback',
             'task_id',
             'task',
             'id',
@@ -31,8 +31,8 @@ class m240827_073558_create_response_table extends Migration
         );
 
         $this->addForeignKey(
-            'fk-response-user_id',
-            'response',
+            'fk-feedback-user_id',
+            'feedback',
             'user_id',
             'user',
             'id',
@@ -46,15 +46,15 @@ class m240827_073558_create_response_table extends Migration
     public function safeDown()
     {
         $this->dropForeignKey(
-            'fk-response-task_id',
-            'response'
+            'fk-feedback-task_id',
+            'feedback'
         );
 
         $this->dropForeignKey(
-            'fk-response-user_id',
-            'response'
+            'fk-feedback-user_id',
+            'feedback'
         );
 
-        $this->dropTable('{{%response}}');
+        $this->dropTable('{{%feedback}}');
     }
 }

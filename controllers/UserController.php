@@ -10,7 +10,7 @@ class UserController extends \yii\web\Controller
     {
 
         $user = User::find()
-            ->with('specializations','responses')
+            ->with('specializations','feedback')
             ->where(['id' => $id])
             ->one();
 

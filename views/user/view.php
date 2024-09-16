@@ -41,16 +41,16 @@ $this->title = 'Профиль пользователя';
             </div>
         </div>
         <h4 class="head-regular">Отзывы заказчиков</h4>
-        <?php foreach ($user->responses as $response): ?>
+        <?php foreach ($user->feedback as $feedback): ?>
         <div class="response-card">
             <img class="customer-photo" src="img/man-coat.png" width="120" height="127" alt="Фото заказчиков">
             <div class="feedback-wrapper">
-                <p class="feedback"><?=Html::encode($response->feedback)?></p>
-                <p class="task">Задание «<a href="<?=Url::to(['task/view','id' => $response->task->id])?>" class="link link--small"><?=$response->task->name?></a>» <?=$response->task->status->name?></p>
+                <p class="feedback"><?=Html::encode($feedback->comment)?></p>
+                <p class="task">Задание «<a href="<?=Url::to(['task/view','id' => $feedback->task->id])?>" class="link link--small"><?=$feedback->task->name?></a>» <?=$feedback->task->status->name?></p>
             </div>
             <div class="feedback-wrapper">
                 <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                <p class="info-text"><span class="current-time">25 минут </span>назад</p>
+                <p class="info-text"><span class="current-time"><?= Yii::$app->formatter->asRelativeTime($feedback->dt_add,) ?> </span></p>
             </div>
         </div>
         <?php endforeach; ?>
@@ -64,9 +64,9 @@ $this->title = 'Профиль пользователя';
                 <dt>Место в рейтинге</dt>
                 <dd>25 место</dd>
                 <dt>Дата регистрации</dt>
-                <dd>15 октября, 13:00</dd>
+                <dd><?= Yii::$app->formatter->asDateTime($user->created_at) ?></dd>
                 <dt>Статус</dt>
-                <dd>Открыт для новых заказов</dd>
+                <dd><?=$user->status->name?></dd>
             </dl>
         </div>
         <div class="right-card white">

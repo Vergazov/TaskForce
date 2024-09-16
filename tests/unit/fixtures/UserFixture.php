@@ -7,9 +7,9 @@ use yii\test\ActiveFixture;
 class UserFixture extends ActiveFixture
 {
     public $modelClass = 'app\models\User';
-    public $depends = [
-        'tests\unit\fixtures\CityFixture',
-        'tests\unit\fixtures\RoleFixture',
-    ];
+//    public $depends = [
+//        'tests\unit\fixtures\CityFixture',
+//        'tests\unit\fixtures\RoleFixture',
+//    ];
 
 }

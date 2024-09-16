@@ -28,7 +28,7 @@ class TaskController extends Controller
     public function actionView($id)
     {
         $task = Task::find()
-            ->with('category','status','responses.author')
+            ->with('category','status','responses.user')
             ->where(['id' => $id])
             ->one();
 //        dd($task);

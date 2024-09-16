@@ -25,6 +25,8 @@ class m240826_164727_create_user_table extends Migration
             'info' => $this->text(),
             'avatar' => $this->string(),
             'failed_tasks' => $this->integer(),
+            'status_id' => $this->integer(),
+            'created_at' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(
@@ -44,6 +46,15 @@ class m240826_164727_create_user_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $this->addForeignKey(
+            'fk-user-status_id',
+            'user',
+            'status_id',
+            'user_status',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
@@ -58,6 +69,11 @@ class m240826_164727_create_user_table extends Migration
 
         $this->dropForeignKey(
             'fk-user-role_id',
+            'user'
+        );
+
+        $this->dropForeignKey(
+            'fk-user-status_id',
             'user'
         );
 

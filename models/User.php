@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property string $role
  * @property string|null $birthdate
  * @property string|null $dt_add
+ * @property string|null $created_at
  * @property string|null $phone
  * @property string|null $telegram
  * @property string|null $info
@@ -27,6 +28,7 @@ use yii\db\ActiveRecord;
  * @property PerformerSpecialization[] $performerSpecializations
  * @property Task[] $tasks
  * @property Task[] $tasks0
+ * @property Status $status
  */
 class User extends ActiveRecord
 {
@@ -44,16 +46,17 @@ class User extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['name', 'email', 'password', 'city_id', 'role'], 'required'],
-            [['city_id', 'failed_tasks'], 'integer'],
-            [['birthdate'], 'date', 'format' => 'php:Y-m-d'],
-            [['dt_add'], 'date', 'format' => 'php:Y-m-d H:i:s'],
+            [['name', 'email', 'password', 'city_id', 'role_id'], 'required'],
+            [['city_id', 'failed_tasks', 'role_id'], 'integer'],
+            [['birthdate','dt_add','created_at'], 'date', 'format' => 'php:Y-m-d'],
             [['info'], 'string'],
             [['name', 'password', 'avatar'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 100],
             [['role', 'phone'], 'string', 'max' => 30],
             [['telegram'], 'string', 'max' => 50],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserStatus::class, 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
 
@@ -68,14 +71,16 @@ class User extends ActiveRecord
             'email' => 'Почта',
             'password' => 'Пароль',
             'city_id' => 'Город',
-            'role' => 'Роль',
+            'role_id' => 'Роль',
             'birthdate' => 'Дата рождения',
             'phone' => 'Телефон',
             'telegram' => 'Телеграм',
             'info' => 'Информация',
             'avatar' => 'Аватар',
             'failed_tasks' => 'Проваленные задачи',
-            'dt_add' => 'Дата отклика'
+            'dt_add' => 'Дата отклика',
+            'status_id' => 'Статус пользователя',
+            'created_at' => 'Дата регистрации',
         ];
     }
 
@@ -121,7 +126,7 @@ class User extends ActiveRecord
 
     public function getCompletedTasks($id)
     {
-        return $this->getTasks()->where(['performer_id' => $id, 'status_id' => Status::STATUS_ACTIVE])->count();
+        return $this->getTasks0()->where(['performer_id' => $id, 'status_id' => 1])->count();
     }
 
     /**
@@ -136,6 +141,21 @@ class User extends ActiveRecord
 
     public function getResponses(): ActiveQuery
     {
-        return $this->hasMany(Response::class, ['author_id' => 'id']);
+        return $this->hasMany(Response::class, ['user_id' => 'id']);
+    }
+
+    public function getFeedback(): ActiveQuery
+    {
+        return $this->hasMany(Feedback::class, ['user_id' => 'id']);
+    }
+
+    public function getFeedbackCount($id)
+    {
+        return $this->getFeedback()->where(['user_id' => $id])->count();
+    }
+
+    public function getStatus(): ActiveQuery
+    {
+        return $this->hasOne(UserStatus::class, ['id' => 'status_id']);
     }
 }
