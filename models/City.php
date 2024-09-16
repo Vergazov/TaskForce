@@ -46,9 +46,9 @@ class City extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'lat' => 'Lat',
-            'lng' => 'Lng',
+            'name' => 'Имя',
+            'lat' => 'Широта',
+            'lng' => 'Долгота',
         ];
     }
 

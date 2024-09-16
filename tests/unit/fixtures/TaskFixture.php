@@ -2,9 +2,6 @@
 
 namespace tests\unit\fixtures;
 
-use app\models\Category;
-use app\models\City;
-use app\models\Status;
 use yii\test\ActiveFixture;
 
 class TaskFixture extends ActiveFixture

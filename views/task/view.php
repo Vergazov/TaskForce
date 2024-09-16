@@ -11,7 +11,7 @@ $this->title = 'Просмотр задания';
 <main class="main-content container">
     <div class="left-column">
         <div class="head-wrapper">
-            <h3 class="head-main"><?= Html::encode($task->title) ?></a></h3>
+            <h3 class="head-main"><?= Html::encode($task->name) ?></a></h3>
             <p class="price price--big"><?= Html::encode($task->budget) ?></p>
         </div>
         <p class="task-description">
@@ -35,13 +35,13 @@ $this->title = 'Просмотр задания';
                     <p class="reviews">2 отзыва</p>
                 </div>
                 <p class="response-message">
-                    <?=Html::encode($response->performer_comment);    ?>
+                    <?=Html::encode($response->performer_comment)?>
                 </p>
 
             </div>
             <div class="feedback-wrapper">
-                <p class="info-text"><span class="current-time">25 минут </span>назад</p>
-                <p class="price price--small">3700 ₽</p>
+                <p class="info-text"><span class="current-time"><?= Yii::$app->formatter->asRelativeTime($response->dt_add,) ?></span>назад</p>
+                <p class="price price--small"><?=Html::encode($response->price)?></p>
             </div>
             <div class="button-popup">
                 <a href="#" class="button button--blue button--small">Принять</a>
@@ -57,9 +57,9 @@ $this->title = 'Просмотр задания';
                 <dt>Категория</dt>
                 <dd><?= $task->category->name ?></dd>
                 <dt>Дата публикации</dt>
-                <dd><?= $task->dt_add ?></dd>
+                <dd><?= Yii::$app->formatter->asRelativeTime($task->dt_add,) ?></dd>
                 <dt>Срок выполнения</dt>
-                <dd><?= $task->deadline ?></dd>
+                <dd><?= Yii::$app->formatter->asDate($task->expire_dt,'long') ?></dd>
                 <dt>Статус</dt>
                 <dd><?= $task->status->name ?></dd>
             </dl>

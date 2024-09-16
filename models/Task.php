@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -10,16 +9,16 @@ use yii\db\ActiveRecord;
  * This is the model class for table "task".
  *
  * @property int $id
- * @property string $title
+ * @property string $name
  * @property string $description
  * @property int $category_id
  * @property int $city_id
- * @property string|null $coordinates
+ * @property string|null $location
  * @property int|null $budget
- * @property string|null $deadline
+ * @property string|null $expire_dt
  * @property int $author_id
  * @property int $performer_id
- * @property string $status
+ * @property int $status_id
  *
  * @property User $author
  * @property Category $category
@@ -49,11 +48,11 @@ class Task extends ActiveRecord
         return [
             [['noResponses', 'noLocation'], 'boolean'],
             [['filterPeriod'], 'number'],
-            [['title', 'description', 'category_id', 'city_id', 'author_id', 'performer_id', 'status'], 'required'],
+            [['name', 'description', 'category_id', 'author_id', 'status_id'], 'required'],
             [['description'], 'string'],
-            [['category_id', 'city_id', 'budget', 'author_id', 'performer_id'], 'integer'],
-            [['deadline'], 'safe'],
-            [['title', 'coordinates'], 'string', 'max' => 100],
+            [['category_id', 'city_id', 'budget', 'author_id', 'performer_id', 'status_id'], 'integer'],
+            [['expire_dt'], 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'Чем текущий день'],
+            [['name', 'location'], 'string', 'max' => 100],
             [['status_id'], 'exists', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
@@ -69,16 +68,16 @@ class Task extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'category_id' => 'Category ID',
-            'city_id' => 'City ID',
-            'coordinates' => 'Coordinates',
-            'budget' => 'Budget',
-            'deadline' => 'Deadline',
-            'author_id' => 'Author ID',
-            'performer_id' => 'Performer ID',
-            'status_id' => 'Status',
+            'name' => 'Название',
+            'description' => 'Описание',
+            'category_id' => 'Категория',
+            'city_id' => 'Город',
+            'location' => 'Место',
+            'budget' => 'Бюджет',
+            'expire_dt' => 'Крайний срок',
+            'author_id' => 'Заказчик',
+            'performer_id' => 'Исполнитель',
+            'status_id' => 'Статус',
             'noResponses' => 'Без откликов',
             'noLocation' => 'Удаленная работа',
             'filterPeriod' => 'Период',
@@ -145,12 +144,18 @@ class Task extends ActiveRecord
         return $this->hasMany(TaskFile::class, ['task_id' => 'id']);
     }
 
+    /**
+     * @return ActiveQuery
+     */
     public function getStatus(): ActiveQuery
     {
         return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
-    public function getSearchQuery()
+    /**
+     * @return ActiveQuery
+     */
+    public function getSearchQuery(): ActiveQuery
     {
         $query = self::find();
 

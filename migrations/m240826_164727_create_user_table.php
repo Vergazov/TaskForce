@@ -56,6 +56,11 @@ class m240826_164727_create_user_table extends Migration
             'user'
         );
 
+        $this->dropForeignKey(
+            'fk-user-role_id',
+            'user'
+        );
+
         $this->dropTable('{{%user}}');
     }
 }

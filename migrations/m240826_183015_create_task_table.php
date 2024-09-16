@@ -14,16 +14,16 @@ class m240826_183015_create_task_table extends Migration
     {
         $this->createTable('{{%task}}', [
             'id' => $this->primaryKey(),
-            'title' => $this->string(50)->notNull(),
+            'name' => $this->string(50)->notNull(),
             'description' => $this->text()->notNull(),
             'category_id' => $this->integer()->notNull(),
-            'city_id' => $this->integer()->notNull(),
-            'coordinates' => $this->string(100),
+            'city_id' => $this->integer(),
+            'location' => $this->string(),
             'budget' => $this->integer(),
-            'deadline' => $this->date(),
+            'expire_dt' => $this->date(),
             'author_id' => $this->integer()->notNull(),
             'performer_id' => $this->integer(),
-            'status_id' => $this->integer(),
+            'status_id' => $this->integer()->notNull(),
             'dt_add' => $this->dateTime(),
         ]);
 
@@ -95,6 +95,11 @@ class m240826_183015_create_task_table extends Migration
 
         $this->dropForeignKey(
             'fk-task-performer_id',
+            'task'
+        );
+
+        $this->dropForeignKey(
+            'fk-task-status_id',
             'task'
         );
 

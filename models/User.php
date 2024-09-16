@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property int $city_id
  * @property string $role
  * @property string|null $birthdate
+ * @property string|null $dt_add
  * @property string|null $phone
  * @property string|null $telegram
  * @property string|null $info
@@ -45,7 +46,8 @@ class User extends ActiveRecord
         return [
             [['name', 'email', 'password', 'city_id', 'role'], 'required'],
             [['city_id', 'failed_tasks'], 'integer'],
-            [['birthdate'], 'safe'],
+            [['birthdate'], 'date', 'format' => 'php:Y-m-d'],
+            [['dt_add'], 'date', 'format' => 'php:Y-m-d H:i:s'],
             [['info'], 'string'],
             [['name', 'password', 'avatar'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 100],
@@ -62,17 +64,18 @@ class User extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'password' => 'Password',
-            'city_id' => 'City ID',
-            'role' => 'Role',
-            'birthdate' => 'Birthdate',
-            'phone' => 'Phone',
-            'telegram' => 'Telegram',
-            'info' => 'Info',
-            'avatar' => 'Avatar',
-            'failed_tasks' => 'Failed Tasks',
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'password' => 'Пароль',
+            'city_id' => 'Город',
+            'role' => 'Роль',
+            'birthdate' => 'Дата рождения',
+            'phone' => 'Телефон',
+            'telegram' => 'Телеграм',
+            'info' => 'Информация',
+            'avatar' => 'Аватар',
+            'failed_tasks' => 'Проваленные задачи',
+            'dt_add' => 'Дата отклика'
         ];
     }
 

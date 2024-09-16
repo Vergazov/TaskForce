@@ -20,6 +20,7 @@ class m240827_073558_create_response_table extends Migration
             'author_id' => $this->integer()->notNull(),
             'feedback' => $this->string(),
             'rating' => $this->integer(),
+            'dt_add' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(
@@ -32,7 +33,7 @@ class m240827_073558_create_response_table extends Migration
         );
 
         $this->addForeignKey(
-            'fk-response-user_id',
+            'fk-response-author_id',
             'response',
             'author_id',
             'user',

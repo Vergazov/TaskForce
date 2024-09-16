@@ -45,8 +45,8 @@ class TaskFile extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'task_id' => 'Task ID',
+            'name' => 'Имя',
+            'task_id' => 'Задача',
         ];
     }
 

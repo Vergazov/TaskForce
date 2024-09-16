@@ -2,9 +2,9 @@
 
 return [
     'Status0' => [
-        'name' => 'active',
+        'name' => 'выполнено',
     ],
     'Status1' => [
-        'name' => 'inactive',
+        'name' => 'не выполнено',
     ],
 ];

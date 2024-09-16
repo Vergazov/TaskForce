@@ -43,8 +43,8 @@ class Category extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'icon' => 'Icon',
+            'name' => 'Имя',
+            'icon' => 'Иконка',
         ];
     }
 
