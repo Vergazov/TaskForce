@@ -126,7 +126,7 @@ class User extends ActiveRecord
 
     public function getCompletedTasks($id)
     {
-        return $this->getTasks0()->where(['performer_id' => $id, 'status_id' => 1])->count();
+        return $this->getTasks0()->where(['status_id' => 4])->count();
     }
 
     /**
@@ -149,9 +149,14 @@ class User extends ActiveRecord
         return $this->hasMany(Feedback::class, ['user_id' => 'id']);
     }
 
-    public function getFeedbackCount($id)
+    public function getFeedbackCount($id): string
     {
-        return $this->getFeedback()->where(['user_id' => $id])->count();
+        $count = $this->getFeedback()->where(['user_id' => $id])->count();
+        return \Yii::t(
+            'app',
+            $count . ' {n, plural, one{отзыв} few{отзыва} many{отзывов} other{отзыва}}',
+            ['n' => $count]
+        );
     }
 
     public function getStatus(): ActiveQuery

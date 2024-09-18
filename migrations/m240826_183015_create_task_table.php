@@ -67,7 +67,7 @@ class m240826_183015_create_task_table extends Migration
             'fk-task-status_id',
             'task',
             'status_id',
-            'status',
+            'task_status',
             'id',
             'CASCADE'
         );

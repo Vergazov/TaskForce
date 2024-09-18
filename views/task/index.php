@@ -2,10 +2,10 @@
 /** @var yii\web\View $this */
 
 /** @var  $tasks */
+/** @var  $task */
 /** @var  $categories */
 
-/** @var  $task */
-
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\helpers\BaseStringHelper;
 use yii\helpers\Html;
@@ -19,7 +19,7 @@ $this->title = 'Просмотр новых заданий';
         <?php foreach ($tasks as $task): ?>
             <div class="task-card">
                 <div class="header-task">
-                    <a href="#" class="link link--block link--big"><?= Html::encode($task->title) ?></a>
+                    <a href="<?=Url::to(['task/view','id' => $task->id])?>" class="link link--block link--big"><?= Html::encode($task->name) ?></a>
                     <p class="price price--task"><?= $task->budget ?></p>
                 </div>
                 <p class="info-text"><span
@@ -28,11 +28,11 @@ $this->title = 'Просмотр новых заданий';
                 <p class="task-text"><?= Html::encode(BaseStringHelper::truncate($task->description, 200)) ?>
                 </p>
                 <div class="footer-task">
-                    <?php if ($task->coordinates): ?>
-                        <p class="info-text town-text"><?= $task->coordinates ?></p>
+                    <?php if ($task->location): ?>
+                        <p class="info-text town-text"><?= $task->location ?></p>
                     <?php endif; ?>
                     <p class="info-text category-text"><?= $task->category->name ?></p>
-                    <a href="#" class="button button--black">Смотреть Задание</a>
+                    <a href="<?=Url::to(['task/view','id' => $task->id])?>" class="button button--black">Смотреть Задание</a>
                 </div>
             </div>
         <?php endforeach; ?>

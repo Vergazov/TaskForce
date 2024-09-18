@@ -38,6 +38,7 @@ class m240827_073557_create_feedback_table extends Migration
             'id',
             'CASCADE'
         );
+
     }
 
     /**

@@ -60,26 +60,26 @@ $this->title = 'Профиль пользователя';
             <h4 class="head-card">Статистика исполнителя</h4>
             <dl class="black-list">
                 <dt>Всего заказов</dt>
-                <dd><?=$user->getCompletedTasks($user->id)?>, 0 провалено</dd>
+                <dd><?=$user->getCompletedTasks($user->id)?>, <?=$user->failed_tasks?> провалено</dd>
                 <dt>Место в рейтинге</dt>
                 <dd>25 место</dd>
                 <dt>Дата регистрации</dt>
                 <dd><?= Yii::$app->formatter->asDateTime($user->created_at) ?></dd>
                 <dt>Статус</dt>
-                <dd><?=$user->status->name?></dd>
+                <dd><?=$user->status->name ?? ''?></dd>
             </dl>
         </div>
         <div class="right-card white">
             <h4 class="head-card">Контакты</h4>
             <ul class="enumeration-list">
                 <li class="enumeration-item">
-                    <a href="#" class="link link--block link--phone">+7 (906) 256-06-08</a>
+                    <a href="#" class="link link--block link--phone"><?=$user->phone?></a>
                 </li>
                 <li class="enumeration-item">
-                    <a href="#" class="link link--block link--email">super-pavel@mail.ru</a>
+                    <a href="#" class="link link--block link--email"><?=$user->email?></a>
                 </li>
                 <li class="enumeration-item">
-                    <a href="#" class="link link--block link--tg">@superpasha</a>
+                    <a href="#" class="link link--block link--tg"><?=$user->telegram?></a>
                 </li>
             </ul>
         </div>

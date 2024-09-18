@@ -3,9 +3,9 @@
 namespace tests\unit\fixtures;
 
 use yii\test\ActiveFixture;
+use app\models\City;
 
 class CityFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\City';
-
+    public $modelClass = City::class;
 }

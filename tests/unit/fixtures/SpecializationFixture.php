@@ -3,9 +3,10 @@
 namespace tests\unit\fixtures;
 
 use yii\test\ActiveFixture;
+use app\models\Specialization;
 
 class SpecializationFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\Specialization';
+    public $modelClass = Specialization::class;
 
 }

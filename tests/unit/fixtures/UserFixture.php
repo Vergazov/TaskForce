@@ -2,14 +2,11 @@
 
 namespace tests\unit\fixtures;
 
+use app\models\User;
 use yii\test\ActiveFixture;
 
 class UserFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\User';
-//    public $depends = [
-//        'tests\unit\fixtures\CityFixture',
-//        'tests\unit\fixtures\RoleFixture',
-//    ];
+    public $modelClass = User::class;
 
 }

@@ -3,9 +3,10 @@
 namespace tests\unit\fixtures;
 
 use yii\test\ActiveFixture;
+use app\models\UserStatus;
 
 class UserStatusFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\UserStatus';
+    public $modelClass = UserStatus::class;
 
 }

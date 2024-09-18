@@ -21,8 +21,8 @@ class TaskController extends Controller
         $tasks = $taskQuery->offset($pages->offset)->limit($pages->limit)->all();
 
         $categories = Category::find()->all();
-
-        return $this->render('index', ['tasks' => $tasks, 'pages' => $pages, 'categories' => $categories, 'task' => $task]);
+        $category = new Category;
+        return $this->render('index', ['tasks' => $tasks, 'pages' => $pages, 'categories' => $categories, 'task' => $task, 'category' => $category]);
     }
 
     public function actionView($id)
@@ -31,7 +31,7 @@ class TaskController extends Controller
             ->with('category','status','responses.user')
             ->where(['id' => $id])
             ->one();
-//        dd($task);
+
         return $this->render('view', ['task' => $task]);
     }
 

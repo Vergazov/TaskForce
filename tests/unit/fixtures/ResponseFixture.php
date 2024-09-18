@@ -3,9 +3,10 @@
 namespace tests\unit\fixtures;
 
 use yii\test\ActiveFixture;
+use app\models\Response;
 
 class ResponseFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\Response';
+    public $modelClass = Response::class;
 
 }

@@ -3,15 +3,19 @@
 namespace tests\unit\fixtures;
 
 use yii\test\ActiveFixture;
+use app\models\Task;
 
 class TaskFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\Task';
-//    public $depends = [
-//        'tests\unit\fixtures\CategoryFixture',
-//        'tests\unit\fixtures\CityFixture',
-//        'tests\unit\fixtures\UserFixture',
-//        'tests\unit\fixtures\StatusFixture',
-//    ];
+    public $modelClass = Task::class;
+    public $depends = [
+        CategoryFixture::class,
+        CityFixture::class,
+        RoleFixture::class,
+        SpecializationFixture::class,
+        TaskStatusFixture::class,
+        UserStatusFixture::class,
+        UserFixture::class,
+    ];
 
 }

@@ -32,7 +32,7 @@ $this->title = 'Просмотр задания';
                 <a href="<?=Url::to(['user/view','id' => $response->user_id])?>" class="link link--block link--big"><?=Html::encode($response->user->name)?></a>
                 <div class="response-wrapper">
                     <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                    <p class="reviews"><?=$response->user->getFeedbackCount($response->user->id)?> отзыва</p>
+                    <p class="reviews"><?=$response->user->getFeedbackCount($response->user->id)?></p>
                 </div>
                 <p class="response-message">
                     <?=Html::encode($response->comment)?>
@@ -40,7 +40,7 @@ $this->title = 'Просмотр задания';
 
             </div>
             <div class="feedback-wrapper">
-                <p class="info-text"><span class="current-time"><?= Yii::$app->formatter->asRelativeTime($response->dt_add,) ?></span>назад</p>
+                <p class="info-text"><span class="current-time"><?= Yii::$app->formatter->asRelativeTime($response->dt_add) ?></span></p>
                 <p class="price price--small"><?=Html::encode($response->price)?></p>
             </div>
             <div class="button-popup">

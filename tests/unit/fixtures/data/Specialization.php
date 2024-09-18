@@ -2,12 +2,12 @@
 
 return [
     'Specialization0' => [
-        'name' => 'Переезды',
+        'name' => 'Учитель Английского языка',
     ],
     'Specialization1' => [
-        'name' => 'Курьерская доставка',
+        'name' => 'Курьер',
     ],
     'Specialization2' => [
-        'name' => 'Учеба',
+        'name' => 'Подсобный рабочий',
     ],
 ];

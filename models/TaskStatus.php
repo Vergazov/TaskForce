@@ -3,14 +3,18 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "Status".
+ * This is the model class for table "task_status".
  *
  * @property int $id
  * @property string $name
+ *
+ * @property Task[] $tasks
  */
-class Status extends \yii\db\ActiveRecord
+class TaskStatus extends ActiveRecord
 {
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 2;
@@ -18,15 +22,15 @@ class Status extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
-        return 'Status';
+        return 'task_status';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'required'],
@@ -37,15 +41,20 @@ class Status extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
-            'name' => 'Имя',
+            'name' => 'Name',
         ];
     }
 
-    public function getTasks()
+    /**
+     * Gets query for [[Tasks]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTasks(): ActiveQuery
     {
         return $this->hasMany(Task::class, ['status_id' => 'id']);
     }

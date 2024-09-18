@@ -24,7 +24,7 @@ return [
     'telegram' => $faker->word,
     'info' => $faker->paragraph,
     'avatar' => $faker->imageUrl(),
-    'failed_tasks' => $faker->numberBetween(0, 100),
+    'failed_tasks' => $faker->numberBetween(0, 15),
     'status_id' => $faker->numberBetween(1, UserStatus::find()->count()),
     'created_at' => date('Y-m-d H:i:s', time() - random_int(259200, 8640000)),
 ];
