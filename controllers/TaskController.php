@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Task;
+use ErrorException;
 use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class TaskController extends Controller
 {
@@ -27,10 +29,17 @@ class TaskController extends Controller
 
     public function actionView($id)
     {
+        if(!$id){
+            throw new NotFoundHttpException();
+        }
         $task = Task::find()
             ->with('category','status','responses.user')
             ->where(['id' => $id])
             ->one();
+
+        if(!$task){
+            throw new NotFoundHttpException();
+        }
 
         return $this->render('view', ['task' => $task]);
     }
