@@ -4,11 +4,9 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
-use app\widgets\Alert;
-use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
+use yii\helpers\Url;
+
 
 AppAsset::register($this);
 
@@ -35,6 +33,7 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
         <a href='#' class="header-logo">
             <img class="logo-image" src="img/logotype.png" width=227 height=60 alt="taskforce">
         </a>
+        <?php if(Yii::$app->controller->id !== 'registration'): ?>
         <div class="nav-wrapper">
             <ul class="nav-list">
                 <li class="list-item list-item--active">
@@ -51,7 +50,9 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
                 </li>
             </ul>
         </div>
+        <?php endif ?>
     </nav>
+    <?php if(Yii::$app->controller->id !== 'registration'): ?>
     <div class="user-block">
         <a href="#">
             <img class="user-photo" src="img/man-glasses.png" width="55" height="55" alt="Аватар">
@@ -73,6 +74,7 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
             </div>
         </div>
     </div>
+    <?php endif;?>
 </header>
 
 <main id="main" class="flex-shrink-0" role="main">
@@ -87,5 +89,6 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
 
 <?php $this->endBody() ?>
 </body>
-</html>
 <?php $this->endPage() ?>
+</html>
+

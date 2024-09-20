@@ -14,9 +14,8 @@ use yii\db\ActiveRecord;
  * @property string $email
  * @property string $password
  * @property int $city_id
- * @property string $role
+ * @property int $role_id
  * @property string|null $birthdate
- * @property string|null $dt_add
  * @property string|null $created_at
  * @property string|null $phone
  * @property string|null $telegram
@@ -32,6 +31,7 @@ use yii\db\ActiveRecord;
  */
 class User extends ActiveRecord
 {
+    public $passwordRepeat;
     /**
      * {@inheritdoc}
      */
@@ -47,12 +47,15 @@ class User extends ActiveRecord
     {
         return [
             [['name', 'email', 'password', 'city_id', 'role_id'], 'required'],
+            [['passwordRepeat'], 'compare', 'compareAttribute' => 'password','message' => "Пароли не совпадают"],
             [['city_id', 'failed_tasks', 'role_id'], 'integer'],
-            [['birthdate','dt_add','created_at'], 'date', 'format' => 'php:Y-m-d'],
+            [['birthdate','created_at'], 'date', 'format' => 'php:Y-m-d'],
             [['info'], 'string'],
             [['name', 'password', 'avatar'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 100],
-            [['role', 'phone'], 'string', 'max' => 30],
+            [['email'], 'email'],
+            [['email'], 'unique'],
+            [['phone'], 'string', 'max' => 30],
             [['telegram'], 'string', 'max' => 50],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
@@ -78,7 +81,6 @@ class User extends ActiveRecord
             'info' => 'Информация',
             'avatar' => 'Аватар',
             'failed_tasks' => 'Проваленные задачи',
-            'dt_add' => 'Дата отклика',
             'status_id' => 'Статус пользователя',
             'created_at' => 'Дата регистрации',
         ];
