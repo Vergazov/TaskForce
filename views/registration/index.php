@@ -38,7 +38,7 @@ $this->title = 'Регистрация';
         </div>
         <?=
         $form
-            ->field($user, 'role_id')
+            ->field($user, 'is_performer')
             ->checkbox([
                 'label' => 'Я собираюсь откликаться на заказы',
                 'labelOptions' => ['class' => 'control-label checkbox-label']

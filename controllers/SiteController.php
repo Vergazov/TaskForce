@@ -65,9 +65,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = '//landing';
 
-        return $this->render('landing',['user' => new User]);
+        return $this->render('index',['user' => new User]);
     }
 
     /**

@@ -15,7 +15,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $password
  * @property int $city_id
- * @property int $role_id
+ * @property bool $is_performer
  * @property string|null $birthdate
  * @property string|null $created_at
  * @property string|null $phone
@@ -47,9 +47,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['name', 'email', 'password', 'city_id', 'role_id'], 'required'],
+            [['name', 'email', 'password', 'city_id', 'is_performer'], 'required'],
             [['passwordRepeat'], 'compare', 'compareAttribute' => 'password','message' => "Пароли не совпадают"],
-            [['city_id', 'failed_tasks', 'role_id'], 'integer'],
+            [['city_id', 'failed_tasks'], 'integer'],
+            [['is_performer'], 'boolean'],
             [['birthdate','created_at'], 'date', 'format' => 'php:Y-m-d'],
             [['info'], 'string'],
             [['name', 'password', 'avatar'], 'string', 'max' => 10,'message' => '123'],
@@ -59,7 +60,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['phone'], 'string', 'max' => 30],
             [['telegram'], 'string', 'max' => 50],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
-            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserStatus::class, 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
@@ -75,7 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Почта',
             'password' => 'Пароль',
             'city_id' => 'Город',
-            'role_id' => 'Роль',
+            'is_performer' => 'Роль',
             'birthdate' => 'Дата рождения',
             'phone' => 'Телефон',
             'telegram' => 'Телеграм',
@@ -95,16 +95,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function getCity(): ActiveQuery
     {
         return $this->hasOne(City::class, ['id' => 'city_id']);
-    }
-
-    /**
-     * Gets query for [[Role]].
-     *
-     * @return ActiveQuery
-     */
-    public function getRole(): ActiveQuery
-    {
-        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 
     /**

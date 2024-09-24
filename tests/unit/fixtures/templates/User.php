@@ -18,7 +18,7 @@ return [
     'email' => $faker->email,
     'password' => Yii::$app->getSecurity()->generatePasswordHash('password_' . $index),
     'city_id' => $faker->numberBetween(1, City::find()->count()),
-    'role_id' => $faker->numberBetween(1, Role::find()->count()),
+    'is_performer' => $faker->numberBetween(0, 1),
     'birthdate' => $faker->date(),
     'phone' => $faker->phoneNumber,
     'telegram' => $faker->word,

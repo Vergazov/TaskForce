@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Task;
-use ErrorException;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -56,7 +55,7 @@ class TaskController extends Controller
         if(!$task){
             throw new NotFoundHttpException();
         }
-
+ 
         return $this->render('view', ['task' => $task]);
     }
 

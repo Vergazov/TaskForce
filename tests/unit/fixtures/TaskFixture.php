@@ -11,7 +11,6 @@ class TaskFixture extends ActiveFixture
     public $depends = [
         CategoryFixture::class,
         CityFixture::class,
-        RoleFixture::class,
         SpecializationFixture::class,
         TaskStatusFixture::class,
         UserStatusFixture::class,
