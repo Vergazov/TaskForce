@@ -53,6 +53,7 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
         <?php endif ?>
     </nav>
     <?php if(Yii::$app->controller->id !== 'registration'): ?>
+    <?php $user = Yii::$app->user->identity; ?>
     <div class="user-block">
         <a href="#">
             <img class="user-photo" src="img/man-glasses.png" width="55" height="55" alt="Аватар">
@@ -68,7 +69,7 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
                         <a href="#" class="link">Связаться с нами</a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="link">Выход из системы</a>
+                        <a href="<?= Url::toRoute('auth/logout')?>" class="link">Выход из системы</a>
                     </li>
                 </ul>
             </div>

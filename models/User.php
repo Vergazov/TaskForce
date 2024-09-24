@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -29,7 +30,7 @@ use yii\db\ActiveRecord;
  * @property Task[] $tasks0
  * @property Status $status
  */
-class User extends ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     public $passwordRepeat;
     /**
@@ -51,7 +52,7 @@ class User extends ActiveRecord
             [['city_id', 'failed_tasks', 'role_id'], 'integer'],
             [['birthdate','created_at'], 'date', 'format' => 'php:Y-m-d'],
             [['info'], 'string'],
-            [['name', 'password', 'avatar'], 'string', 'max' => 255],
+            [['name', 'password', 'avatar'], 'string', 'max' => 10,'message' => '123'],
             [['email'], 'string', 'max' => 100],
             [['email'], 'email'],
             [['email'], 'unique'],
@@ -161,8 +162,38 @@ class User extends ActiveRecord
         );
     }
 
+    public function validatePassword($password)
+    {
+        return \Yii::$app->security->validatePassword($password, $this->password);
+    }
+
     public function getStatus(): ActiveQuery
     {
         return $this->hasOne(UserStatus::class, ['id' => 'status_id']);
+    }
+
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // TODO: Implement findIdentityByAccessToken() method.
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
     }
 }

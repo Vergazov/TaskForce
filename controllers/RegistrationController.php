@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 
 class RegistrationController extends Controller
 {
+
     public function actionIndex()
     {
         $cities = City::find()->all();
