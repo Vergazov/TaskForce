@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Task;
+use app\models\TaskFile;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -57,6 +58,15 @@ class TaskController extends Controller
         }
  
         return $this->render('view', ['task' => $task]);
+    }
+
+    public function actionStore()
+    {
+        $categories = Category::find()->all();
+        $task = new Task;
+        $taskFile = new TaskFile;
+
+        return $this->render('create', ['categories' => $categories, 'task' => $task, 'taskFile' => $taskFile]);
     }
 
 }

@@ -53,7 +53,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['is_performer'], 'boolean'],
             [['birthdate','created_at'], 'date', 'format' => 'php:Y-m-d'],
             [['info'], 'string'],
-            [['name', 'password', 'avatar'], 'string', 'max' => 10,'message' => '123'],
+            [['name', 'password', 'avatar'], 'string', 'max' => 255,],
             [['email'], 'string', 'max' => 100],
             [['email'], 'email'],
             [['email'], 'unique'],

@@ -14,7 +14,7 @@ class m240826_194832_create_task_file_table extends Migration
     {
         $this->createTable('{{%task_file}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(50),
+            'name' => $this->string(),
             'task_id' => $this->integer(),
         ]);
 
