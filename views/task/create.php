@@ -4,6 +4,7 @@
 /** @var $taskFile */
 
 /** @var $task */
+/** @var $errors */
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -13,8 +14,9 @@ $this->title = 'Новое задание';
 ?>
 
 <div class="add-task-form regular-form">
+    <?=dump($errors ?? '')?>
 
-    <?php $form = ActiveForm::begin() ?>
+    <?php $form = ActiveForm::begin(['action' => '?r=task/store']) ?>
 
     <h3 class="head-main head-main">Публикация нового задания</h3>
 
@@ -53,8 +55,8 @@ $this->title = 'Новое задание';
     </div>
 
     <?= $form
-        ->field($taskFile, 'task_id')
-        ->fileInput(['class' => 'new-file', 'id' => 'new-file'])
+        ->field($taskFile, 'path[]')
+        ->fileInput(['class' => 'new-file', 'id' => 'new-file', 'multiple' => true])
         ->label('Файлы', ['for' => 'new-file', 'class' => 'form-label'])
     ?>
 

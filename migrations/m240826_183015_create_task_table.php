@@ -23,7 +23,7 @@ class m240826_183015_create_task_table extends Migration
             'expire_dt' => $this->date(),
             'author_id' => $this->integer()->notNull(),
             'performer_id' => $this->integer(),
-            'status_id' => $this->integer()->notNull(),
+            'status_id' => $this->integer()->notNull()->defaultValue(1),
             'dt_add' => $this->dateTime(),
         ]);
 

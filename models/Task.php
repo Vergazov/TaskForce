@@ -51,9 +51,13 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'description', 'category_id', 'author_id', 'status_id'], 'required'],
+            [['status_id'], 'default', 'value' => 1],
+            [['dt_add'], 'default', 'value' => date("Y-m-d H:i:s")],
             [['description'], 'string'],
             [['category_id', 'city_id', 'budget', 'author_id', 'performer_id', 'status_id'], 'integer'],
+            [['budget'], 'min' => 1],
             [['expire_dt', 'dt_add'], 'safe'],
+            [['expire_dt'], 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'чем текущий день'],
             [['name'], 'string', 'max' => 50],
             [['location'], 'string', 'max' => 255],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['author_id' => 'id']],
@@ -71,17 +75,17 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'category_id' => 'Category ID',
-            'city_id' => 'City ID',
-            'location' => 'Location',
-            'budget' => 'Budget',
-            'expire_dt' => 'Expire Dt',
-            'author_id' => 'Author ID',
-            'performer_id' => 'Performer ID',
-            'status_id' => 'Status ID',
-            'dt_add' => 'Dt Add',
+            'name' => 'Суть работы',
+            'description' => 'Подробности задания',
+            'category_id' => 'Категория',
+            'city_id' => 'Город',
+            'location' => 'Координаты',
+            'budget' => 'Бюджет',
+            'expire_dt' => 'Срок исполнения',
+            'author_id' => 'Автор',
+            'performer_id' => 'Исполнитель',
+            'status_id' => 'Статус',
+            'dt_add' => 'Дата создания',
         ];
     }
 

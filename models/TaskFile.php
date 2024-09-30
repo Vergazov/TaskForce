@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  */
 class TaskFile extends ActiveRecord
 {
+    public $path;
     /**
      * {@inheritdoc}
      */
@@ -31,8 +32,9 @@ class TaskFile extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['task_id'], 'integer'],
+            [['path'], 'image', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxFiles' => 10],
             [['name'], 'string', 'max' => 255],
+            [['task_id'], 'integer'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
@@ -46,6 +48,7 @@ class TaskFile extends ActiveRecord
             'id' => 'ID',
             'name' => 'Имя',
             'task_id' => 'Задача',
+            'path' => 'Путь',
         ];
     }
 
@@ -57,5 +60,19 @@ class TaskFile extends ActiveRecord
     public function getTask(): ActiveQuery
     {
         return $this->hasOne(Task::class, ['id' => 'task_id']);
+    }
+
+    public function upload($taskId): void
+    {
+        if($this->path && $this->validate()){
+            foreach ($this->path as $file) {
+                $taskFile = new TaskFile;
+                $newName = uniqid('upload_', true) . '.' . $file->extension;
+                $file->saveAs('uploads/' . $newName);
+                $taskFile->name = $newName;
+                $taskFile->task_id = $taskId;
+                $taskFile->save(false);
+            }
+        }
     }
 }

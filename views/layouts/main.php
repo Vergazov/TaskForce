@@ -44,9 +44,9 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
                 <li class="list-item">
                     <a href="#" class="link link--nav">Мои задания</a>
                 </li>
-                <?php if ($user->is_performer): ?>
+                <?php if (!$user->is_performer ?? null): ?>
                     <li class="list-item">
-                        <a href="<?=Url::toRoute('task/store')?>" class="link link--nav">Создать задание</a>
+                        <a href="<?=Url::toRoute('task/create')?>" class="link link--nav">Создать задание</a>
                     </li>
                 <?php endif; ?>
                 <li class="list-item">
@@ -62,7 +62,7 @@ $this->registerLinkTag(['rel' => 'stylesheet', 'href' => Yii::getAlias('@web/css
             <img class="user-photo" src="img/man-glasses.png" width="55" height="55" alt="Аватар">
         </a>
         <div class="user-menu">
-            <p class="user-name"><?= $user->name ?></p>
+            <p class="user-name"><?= $user->name ?? false ?></p>
             <div class="popup-head">
                 <ul class="popup-menu">
                     <li class="menu-item">
