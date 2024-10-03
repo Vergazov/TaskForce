@@ -137,6 +137,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Response::class, ['user_id' => 'id']);
     }
 
+    public function getResponseByPerformer($taskId)
+    {
+        return $this->getResponses()
+            ->where(['user_id' => $this->id])
+            ->where(['task_id'=> $taskId])
+            ->one();
+    }
+
     public function getFeedback(): ActiveQuery
     {
         return $this->hasMany(Feedback::class, ['user_id' => 'id']);
@@ -147,7 +155,7 @@ class User extends ActiveRecord implements IdentityInterface
         $count = $this->getFeedback()->where(['user_id' => $id])->count();
         return \Yii::t(
             'app',
-            $count . ' {n, plural, one{отзыв} few{отзыва} many{отзывов} other{отзыва}}',
+            $count . ' {n, plural, one{отзыв} few{отзыва} many{отзывов} other{отзывов}}',
             ['n' => $count]
         );
     }

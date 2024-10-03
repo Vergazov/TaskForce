@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "task".
@@ -30,7 +31,7 @@ use yii\db\ActiveQuery;
  * @property TaskStatus $status
  * @property TaskFile[] $taskFiles
  */
-class Task extends \yii\db\ActiveRecord
+class Task extends ActiveRecord
 {
     public $noResponses;
     public $noLocation;
@@ -55,7 +56,6 @@ class Task extends \yii\db\ActiveRecord
             [['dt_add'], 'default', 'value' => date("Y-m-d H:i:s")],
             [['description'], 'string'],
             [['category_id', 'city_id', 'budget', 'author_id', 'performer_id', 'status_id'], 'integer'],
-            [['budget'], 'min' => 1],
             [['expire_dt', 'dt_add'], 'safe'],
             [['expire_dt'], 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'чем текущий день'],
             [['name'], 'string', 'max' => 50],
@@ -99,6 +99,12 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 
+    public function getIsAuthor($currentUserId): bool
+    {
+        $author = $this->author;
+        return $author->id === $currentUserId;
+    }
+
     /**
      * Gets query for [[Category]].
      *
@@ -137,6 +143,12 @@ class Task extends \yii\db\ActiveRecord
     public function getPerformer()
     {
         return $this->hasOne(User::class, ['id' => 'performer_id']);
+    }
+
+    public function getIsPerformer($currentUserId): bool
+    {
+        $performer = $this->performer;
+        return $performer->id === $currentUserId;
     }
 
     /**
