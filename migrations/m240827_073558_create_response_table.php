@@ -18,6 +18,7 @@ class m240827_073558_create_response_table extends Migration
             'comment' => $this->string(),
             'task_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
+            'status_id' => $this->integer(),
             'dt_add' => $this->dateTime(),
         ]);
 
@@ -38,6 +39,15 @@ class m240827_073558_create_response_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $this->addForeignKey(
+            'fk-response-status_id',
+            'response',
+            'status_id',
+            'response_status',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
@@ -52,6 +62,11 @@ class m240827_073558_create_response_table extends Migration
 
         $this->dropForeignKey(
             'fk-response-user_id',
+            'response'
+        );
+
+        $this->dropForeignKey(
+            'fk-response-status_id',
             'response'
         );
 

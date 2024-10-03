@@ -75,4 +75,15 @@ class TaskFile extends ActiveRecord
             }
         }
     }
+
+    public function upload1()
+    {
+        $newName = uniqid('upload_', true) . '.' . 'png';
+        $this->name = 'uploads/' . $newName;
+        if($this->save()){
+            return $this->path->saveAs($newName);
+        }
+
+        return false;
+    }
 }
