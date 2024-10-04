@@ -2,22 +2,25 @@
 
 namespace app\models;
 
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "taskfile".
+ * This is the model class for table "task_file".
  *
  * @property int $id
- * @property string $name
- * @property int $task_id
+ * @property string|null $name
+ * @property string|null $path
+ * @property int|null $size
+ * @property int|null $user_id
+ * @property string|null $task_uid
+ * @property string|null $dt_add
  *
- * @property Task $task
+ * @property User $user
  */
 class TaskFile extends ActiveRecord
 {
-    public $path;
+    public $file;
     /**
      * {@inheritdoc}
      */
@@ -32,10 +35,11 @@ class TaskFile extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['path'], 'image', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxFiles' => 10],
-            [['name'], 'string', 'max' => 255],
-            [['task_id'], 'integer'],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
+            [['file'], 'image', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg'],
+            [['user_id', 'size'], 'integer'],
+            [['dt_add'], 'safe'],
+            [['name', 'path', 'task_uid'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -46,42 +50,38 @@ class TaskFile extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Имя',
-            'task_id' => 'Задача',
-            'path' => 'Путь',
+            'name' => 'Name',
+            'path' => 'Path',
+            'size' => 'Size',
+            'user_id' => 'User ID',
+            'task_uid' => 'Task Uid',
+            'dt_add' => 'Dt Add',
         ];
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[User]].
      *
      * @return ActiveQuery
      */
+    public function getUser(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
     public function getTask(): ActiveQuery
     {
-        return $this->hasOne(Task::class, ['id' => 'task_id']);
+        return $this->hasOne(Task::class, ['task_uid' => 'task_uid']);
     }
 
-    public function upload($taskId): void
+    public function upload(): bool
     {
-        if($this->path && $this->validate()){
-            foreach ($this->path as $file) {
-                $taskFile = new TaskFile;
-                $newName = uniqid('upload_', true) . '.' . $file->extension;
-                $file->saveAs('uploads/' . $newName);
-                $taskFile->name = $newName;
-                $taskFile->task_id = $taskId;
-                $taskFile->save(false);
-            }
-        }
-    }
-
-    public function upload1()
-    {
-        $newName = uniqid('upload_', true) . '.' . 'png';
-        $this->name = 'uploads/' . $newName;
+        $this->name = $this->file->name;
+        $newName = uniqid('', true) . '.' . $this->file->getExtension();
+        $this->path = '/uploads/' . $newName;
+        $this->size = $this->file->size;
         if($this->save()){
-            return $this->path->saveAs($newName);
+            return $this->file->saveAs('@webroot/uploads/' . $newName);
         }
 
         return false;

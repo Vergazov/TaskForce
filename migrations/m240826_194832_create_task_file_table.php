@@ -15,14 +15,18 @@ class m240826_194832_create_task_file_table extends Migration
         $this->createTable('{{%task_file}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'task_id' => $this->integer(),
+            'path' => $this->string(),
+            'size' => $this->integer(),
+            'user_id' => $this->integer(),
+            'task_uid' => $this->string(),
+            'dt_add' => $this->dateTime(),
         ]);
 
         $this->addForeignKey(
-            'fk-task_file-task_id',
+            'fk-task_file-user_id',
             'task_file',
-            'task_id',
-            'task',
+            'user_id',
+            'user',
             'id',
             'CASCADE'
         );
@@ -34,7 +38,7 @@ class m240826_194832_create_task_file_table extends Migration
     public function safeDown()
     {
         $this->dropForeignKey(
-            'fk-task_file-task_id',
+            'fk-task_file-user_id',
             'task_file'
         );
 

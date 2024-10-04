@@ -88,7 +88,7 @@ $this->title = 'Просмотр задания';
                 <dt>Категория</dt>
                 <dd><?= $task->category->name ?></dd>
                 <dt>Дата публикации</dt>
-                <dd><?= Yii::$app->formatter->asRelativeTime($task->dt_add) ?></dd>
+                <dd><?= Yii::$app->formatter->asRelativeTime($task->dt_add,'+3 hours') ?></dd>
                 <dt>Срок выполнения</dt>
                 <dd><?= Yii::$app->formatter->asDate($task->expire_dt, 'long') ?></dd>
                 <dt>Статус</dt>
@@ -100,9 +100,9 @@ $this->title = 'Просмотр задания';
             <ul class="enumeration-list">
                 <?php foreach ($task->taskFiles as $file): ?>
                     <li class="enumeration-item">
-                        <a href="uploads/<?= $file->name ?>"
+                        <a href=".<?=$file->path?>"
                            class="link link--block link--clip"><?= $file->name ?></a>
-                        <p class="file-size">356 Кб</p>
+                        <p class="file-size"><?=$file->size?></p>
                     </li>
                 <?php endforeach; ?>
             </ul>

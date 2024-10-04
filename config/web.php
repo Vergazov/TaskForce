@@ -1,5 +1,7 @@
 <?php
 
+use yii\i18n\Formatter;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -13,6 +15,11 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter' => [
+            'class' => Formatter::class,
+            'locale' => 'ru_RU',
+            'timeZone' => 'Europe/Moscow',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'XknlLjiyF9IbRBCXlAGxOGQ7CMqVudIf',

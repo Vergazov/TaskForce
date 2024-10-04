@@ -14,16 +14,12 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Новое задание';
-
 DropzoneAsset::register($this);
-Yii::$app->session->set('task_id', $task->id);
-dump(Yii::$app->session->get('task_id'));
 ?>
 
 <div class="add-task-form regular-form">
-    <?= dump($errors ?? '') ?>
 
-    <?php $form = ActiveForm::begin(['action' => '?r=task/store']) ?>
+    <?php $form = ActiveForm::begin(['action' => '?r=task/store'])?>
 
     <h3 class="head-main head-main">Публикация нового задания</h3>
 
@@ -65,14 +61,7 @@ dump(Yii::$app->session->get('task_id'));
     <div class="new-file">
         Добавить новый файл
     </div>
-
     <div class="files-previews"></div>
-
-    <!--    --><?php //= $form
-    //        ->field($taskFile, 'path[]')
-    //        ->fileInput(['class' => 'new-file', 'id' => 'new-file', 'multiple' => true])
-    //        ->label('Файлы', ['for' => 'new-file', 'class' => 'form-label'])
-    //    ?>
 
     <?= Html::submitInput('Опубликовать', ['class' => 'button button--blue']) ?>
 

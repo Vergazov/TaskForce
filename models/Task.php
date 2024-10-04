@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property int $author_id
  * @property int|null $performer_id
  * @property int $status_id
+ * @property string|null $task_uid
  * @property string|null $dt_add
  *
  * @property User $author
@@ -29,7 +30,6 @@ use yii\db\ActiveRecord;
  * @property User $performer
  * @property Response[] $responses
  * @property TaskStatus $status
- * @property TaskFile[] $taskFiles
  */
 class Task extends ActiveRecord
 {
@@ -51,15 +51,15 @@ class Task extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'category_id', 'author_id', 'status_id'], 'required'],
+            [['name', 'description', 'category_id', 'author_id'], 'required'],
             [['status_id'], 'default', 'value' => 1],
-            [['dt_add'], 'default', 'value' => date("Y-m-d H:i:s")],
+            [['dt_add'], 'default', 'value' => Yii::$app->formatter->asDatetime('now','php:Y-m-d H:i:s')],
             [['description'], 'string'],
             [['category_id', 'city_id', 'budget', 'author_id', 'performer_id', 'status_id'], 'integer'],
             [['expire_dt', 'dt_add'], 'safe'],
             [['expire_dt'], 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'чем текущий день'],
             [['name'], 'string', 'max' => 50],
-            [['location'], 'string', 'max' => 255],
+            [['location', 'task_uid'], 'string', 'max' => 255],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['author_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
@@ -75,17 +75,18 @@ class Task extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Суть работы',
-            'description' => 'Подробности задания',
-            'category_id' => 'Категория',
-            'city_id' => 'Город',
-            'location' => 'Координаты',
-            'budget' => 'Бюджет',
-            'expire_dt' => 'Срок исполнения',
-            'author_id' => 'Автор',
-            'performer_id' => 'Исполнитель',
-            'status_id' => 'Статус',
-            'dt_add' => 'Дата создания',
+            'name' => 'Name',
+            'description' => 'Description',
+            'category_id' => 'Category ID',
+            'city_id' => 'City ID',
+            'location' => 'Location',
+            'budget' => 'Budget',
+            'expire_dt' => 'Expire Dt',
+            'author_id' => 'Author ID',
+            'performer_id' => 'Performer ID',
+            'status_id' => 'Status ID',
+            'task_uid' => 'Task Uid',
+            'dt_add' => 'Dt Add',
         ];
     }
 
@@ -171,14 +172,9 @@ class Task extends ActiveRecord
         return $this->hasOne(TaskStatus::class, ['id' => 'status_id']);
     }
 
-    /**
-     * Gets query for [[TaskFiles]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getTaskFiles()
     {
-        return $this->hasMany(TaskFile::class, ['task_id' => 'id']);
+        return $this->hasMany(TaskFile::class, ['task_uid' => 'task_uid']);
     }
 
     public function getSearchQuery(): ActiveQuery

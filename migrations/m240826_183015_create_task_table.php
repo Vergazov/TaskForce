@@ -24,6 +24,7 @@ class m240826_183015_create_task_table extends Migration
             'author_id' => $this->integer()->notNull(),
             'performer_id' => $this->integer(),
             'status_id' => $this->integer()->notNull()->defaultValue(1),
+            'task_uid' => $this->string(),
             'dt_add' => $this->dateTime(),
         ]);
 

@@ -69,52 +69,40 @@ class TaskController extends Controller
         $task = new Task;
         $taskFile = new TaskFile;
 
+        if(!Yii::$app->session->has('task_uid')) {
+            Yii::$app->session->set('task_uid', uniqid('upload_', true));
+        }
+
         return $this->render('create', ['categories' => $categories, 'task' => $task, 'taskFile' => $taskFile]);
     }
 
     public function actionStore()
     {
+        $categories = Category::find()->all();
         $user = Yii::$app->user->identity;
-        $id = '';
         $errors = '';
-
-        if(!Yii::$app->session->has('task_id')) {
-            Yii::$app->session->set('task_id', uniqid('upload', true));
-        }
 
         if(Yii::$app->request->isPost){
             $task = new Task();
             $task->load(Yii::$app->request->post());
             $task->loadDefaultValues();
             $task->author_id = $user->id;
+            $task->task_uid = Yii::$app->session->get('task_uid');
 
             if($task->validate()){
                 $task->save();
-                $id = Yii::$app->db->getLastInsertID();
+                if($task->id){
+                    Yii::$app->session->remove('task_uid');
+                }
             }else{
                 $errors = $task->getErrors();
             }
 
-//            $taskFile = new TaskFile;
-//            $taskFile->path = UploadedFile::getInstances($taskFile, 'path');
-//            if($taskFile->validate()){
-//                $taskFile->upload($id);
-//            }else {
-//                $errors = $taskFile->getErrors();
-//            }
-
-            /**
-             * TODO: сделать нормальный вывод ошибок
-             */
-//            if($errors){
-//                return $this->render('create', ['errors' => $errors, 'task' => $task, 'taskFile' => $taskFile]);
-//            }
-
             if($errors){
-                return $this->render('create', ['errors' => $errors, 'task' => $task]);
+                return $this->render('create', ['errors' => $errors, 'task' => $task, 'categories' => $categories]);
             }
 
-            return $this->redirect(Url::to(['task/view', 'id' => $id, 'task' => $task]));
+            return $this->redirect(Url::to(['task/view', 'id' => $task->id]));
         }
 
     }
@@ -123,14 +111,14 @@ class TaskController extends Controller
     {
         if(Yii::$app->request->isPost){
             $model = new TaskFile;
-            $model->task_id = Yii::$app->session->get('task_id');
-            $model->path = UploadedFile::getInstanceByName('file');
+            $model->task_uid = Yii::$app->session->get('task_uid');
+            $model->file = UploadedFile::getInstanceByName('file');
+            $model->dt_add = date('Y-m-d H:i:s');
 
-            $model->upload1();
+            $model->upload();
 
             return $this->asJson($model->getAttributes());
         }
-
     }
 
     public function actionAcceptPerformer($performerId, $taskId)
