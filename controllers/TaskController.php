@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\Feedback;
 use app\models\Response;
 use app\models\Task;
 use app\models\TaskFile;
@@ -48,6 +49,9 @@ class TaskController extends Controller
 
     public function actionView($id)
     {
+        $feedback = new Feedback;
+        $response = new Response;
+
         if(!$id){
             throw new NotFoundHttpException();
         }
@@ -60,7 +64,7 @@ class TaskController extends Controller
             throw new NotFoundHttpException();
         }
  
-        return $this->render('view', ['task' => $task]);
+        return $this->render('view', ['task' => $task, 'feedback' => $feedback, 'response' => $response]);
     }
 
     public function actionCreate()
@@ -144,6 +148,21 @@ class TaskController extends Controller
         $task = Task::findOne($taskId);
 
         return $this->redirect(Url::to(['task/view', 'id' => $taskId, 'task' => $task]));
+    }
+
+    public function actionDenyTask()
+    {
+        dd('DenyTask');
+    }
+
+    public function actionCompleteTask()
+    {
+        dd('CompleteTask');
+    }
+
+    public function actionResponseTask()
+    {
+        dd('ResponseTask');
     }
 
 }

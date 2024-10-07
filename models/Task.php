@@ -37,6 +37,8 @@ class Task extends ActiveRecord
     public $noLocation;
     public $filterPeriod;
 
+    const STATUS_IN_PROGRESS = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -196,5 +198,19 @@ class Task extends ActiveRecord
         }
 
         return $query->orderBy('dt_add DESC');
+    }
+
+    public function isInProgress(): bool
+    {
+        return $this->getStatus()->one()->id != self::STATUS_IN_PROGRESS;
+    }
+
+    public function getResponsesQuery($user = null)
+    {
+        $allResponses = $this->getResponses();
+        if($user && $user->getId() !== $this->author_id){
+            $allResponses->where(['user_id' => $user->getId()]);
+        }
+        return $allResponses;
     }
 }
