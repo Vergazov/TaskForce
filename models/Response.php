@@ -12,10 +12,10 @@ use Yii;
  * @property string|null $comment
  * @property int $task_id
  * @property int $user_id
- * @property int|null $status_id
  * @property string|null $dt_add
+ * @property boolean|null is_accepted
+ * @property boolean|null is_denied
  *
- * @property ResponseStatus $status
  * @property Task $task
  * @property User $user
  */
@@ -35,11 +35,12 @@ class Response extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price', 'task_id', 'user_id', 'status_id'], 'integer'],
+            [['price', 'task_id', 'user_id'], 'integer'],
             [['task_id', 'user_id'], 'required'],
             [['dt_add'], 'safe'],
+            [['is_accepted'], 'boolean'],
+            [['is_denied'], 'boolean'],
             [['comment'], 'string', 'max' => 255],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ResponseStatus::class, 'targetAttribute' => ['status_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -55,21 +56,12 @@ class Response extends \yii\db\ActiveRecord
             'price' => 'Price',
             'comment' => 'Comment',
             'task_id' => 'Task ID',
-            'user_id' => 'User ID',
-            'status_id' => 'Status ID',
+            'is_accepted' => 'Is_accepted',
+            'is_denied' => 'Is denied',
             'dt_add' => 'Dt Add',
         ];
     }
 
-    /**
-     * Gets query for [[Status]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStatus()
-    {
-        return $this->hasOne(ResponseStatus::class, ['id' => 'status_id']);
-    }
 
     /**
      * Gets query for [[Task]].

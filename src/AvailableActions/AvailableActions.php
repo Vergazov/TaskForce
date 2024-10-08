@@ -14,10 +14,10 @@ class AvailableActions
     const STATUS_FAIL = 'fail';
 
     const ROLE_PERFORMER = 'performer';
-    const ROLE_CLIENT = 'customer';
+    const ROLE_CLIENT = 'client';
 
     private ?int $performerId;
-    private int $clientId;
+    private ?int $clientId;
     private string $status;
 
     /**
@@ -26,12 +26,12 @@ class AvailableActions
      * @param int|null $performerId
      * @throws StatusActionException
      */
-    public function __construct(string $status, int $clientId, ?int $performerId = null)
+    public function __construct(string $status, ?int $clientId=null, ?int $performerId = null)
     {
         $this->setStatus($status);
 
         $this->performerId = $performerId;
-        $this->clientId = $clientId;
+        $this->clientId = $clientId;;
     }
 
     /**
@@ -68,7 +68,6 @@ class AvailableActions
 
         $statusActions = $this->statusAllowedActions()[$this->status];
         $roleActions = $this->roleAllowedActions()[$role];
-
         $allowedActions = array_intersect($statusActions, $roleActions);
 
         $allowedActions = array_filter($allowedActions,function ($action) use ($id){
@@ -115,15 +114,23 @@ class AvailableActions
      */
     private function statusAllowedActions(): array
     {
-        $map = [
+        return [
             self::STATUS_CANCEL => [],
             self::STATUS_DONE => [],
             self::STATUS_NEW => [CancelAction::class,RespondAction::class],
             self::STATUS_IN_PROGRESS => [DenyAction::class,CompleteAction::class],
             self::STATUS_FAIL => [],
         ];
+    }
 
-        return $map;
+    public function getNextStatus(): array
+    {
+        return  [
+            RespondAction::class => 'new',
+            CancelAction::class => 'cancel',
+            CompleteAction::class => 'done',
+            DenyAction::class => 'fail',
+        ];
     }
 
 }

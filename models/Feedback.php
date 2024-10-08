@@ -48,7 +48,7 @@ class Feedback extends ActiveRecord
         return [
             'id' => 'ID',
             'comment' => 'Comment',
-            'rating' => 'Rating',
+            'rating' => 'Оценка',
             'task_id' => 'Task ID',
             'dt_add' => 'Dt Add',
         ];

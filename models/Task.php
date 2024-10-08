@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use AvailableActions\AbstractAction;
+use AvailableActions\AvailableActions;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -36,8 +38,6 @@ class Task extends ActiveRecord
     public $noResponses;
     public $noLocation;
     public $filterPeriod;
-
-    const STATUS_IN_PROGRESS = 3;
 
     /**
      * {@inheritdoc}
@@ -202,7 +202,7 @@ class Task extends ActiveRecord
 
     public function isInProgress(): bool
     {
-        return $this->getStatus()->one()->id != self::STATUS_IN_PROGRESS;
+        return $this->getStatus()->one()->id != TaskStatus::STATUS_IN_PROGRESS;
     }
 
     public function getResponsesQuery($user = null)
@@ -212,5 +212,15 @@ class Task extends ActiveRecord
             $allResponses->where(['user_id' => $user->getId()]);
         }
         return $allResponses;
+    }
+
+    public function goToNextStatus(AbstractAction $action)
+    {
+        $actionManager = new AvailableActions($this->status->slug, $this->performer_id, $this->author_id);
+        $nextStatusName = $actionManager->getNextStatus()[get_class($action)];
+
+        $status = TaskStatus::findOne(['slug' => $nextStatusName]);
+        $this->link('status', $status);
+        $this->save();
     }
 }

@@ -160,6 +160,12 @@ class User extends ActiveRecord implements IdentityInterface
         );
     }
 
+    private function increaseFailCount() :void
+    {
+        ++$this->failed_tasks;
+        $this->save(false);
+    }
+
     public function validatePassword($password)
     {
         return \Yii::$app->security->validatePassword($password, $this->password);

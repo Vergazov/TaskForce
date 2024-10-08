@@ -3,6 +3,8 @@
 namespace AvailableActions;
 
 
+use app\models\User;
+
 class RespondAction extends AbstractAction
 {
     public static function getPublicName(): string
@@ -15,8 +17,8 @@ class RespondAction extends AbstractAction
         return 'act-respond';
     }
 
-    public static function checkRights(int $userId, int $performerId, int $clientId): bool
+    public static function checkRights(int $userId, ?int $performerId, int $clientId): bool
     {
-        return $userId === $performerId;
+        return $userId !== $performerId;
     }
 }

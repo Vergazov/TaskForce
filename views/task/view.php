@@ -6,30 +6,33 @@
 
 /** @var  $response */
 
+use app\Helpers\UiHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Просмотр задания';
 $user = Yii::$app->user->identity;
+$this->registerJsFile('@web/js/main.js');
 
 ?>
 
-    <div class="add-task-form regular-form">
+<div class="add-task-form regular-form">
     <div class="head-wrapper">
         <h3 class="head-main"><?= Html::encode($task->name) ?></a></h3>
         <p class="price price--big"><?= Html::encode($task->budget) ?></p>
     </div>
-    <p class="task-description">
-        <?= Html::encode($task->description) ?></a></p>
-    <a href="#" class="button button--blue action-btn" data-action="act_response">Откликнуться на задание</a>
-    <a href="#" class="button button--orange action-btn" data-action="refusal">Отказаться от задания</a>
-    <a href="#" class="button button--pink action-btn" data-action="completion">Завершить задание</a>
+    <p class="task-description"><?= Html::encode($task->description) ?></p>
+
+    <?php foreach (UiHelper::getActionButtons($task, $user) as $button): ?>
+        <?= $button ?>
+    <?php endforeach; ?>
+
     <?php if ($task->location): ?>
         <div class="task-map">
             <img class="map" src="img/map.png" width="725" height="346" alt="Новый арбат, 23, к. 1">
-            <p class="map-address town"><?= ($task->city->name) ?></p>
-            <p class="map-address"><?= ($task->location) ?></p>
+            <p class="map-address town"><?=($task->city->name)?></p>
+            <p class="map-address"><?=($task->location)?></p>
         </div>
     <?php endif ?>
 
@@ -59,11 +62,11 @@ $user = Yii::$app->user->identity;
                 </p>
                 <p class="price price--small"><?= Html::encode($response->price) ?></p>
             </div>
-            <?php if ($user->id === $task->author_id && $task->isInProgress()) : ?>
+            <?php if ($user->id === $task->author_id && $task->isInProgress() && !$response->is_denied) : ?>
                 <div class="button-popup">
-                    <a href="<?= Url::toRoute(['task/accept-performer', 'performerId' => $response->user_id, 'taskId' => $task->id]) ?>"
+                    <a href="<?= Url::toRoute(['task/accept-performer', 'id' => $response->id]) ?>"
                        class="button button--blue button--small">Принять</a>
-                    <a href="<?= Url::to(['task/deny_performer', 'id' => $response->id]) ?>"
+                    <a href="<?= Url::to(['task/deny-performer', 'id' => $response->id]) ?>"
                        class="button button--orange button--small">Отказать</a>
                 </div>
             <?php endif; ?>
@@ -100,7 +103,7 @@ $user = Yii::$app->user->identity;
     </div>
 
 
-    <section class="pop-up pop-up--refusal pop-up--close">
+    <section class="pop-up pop-up--act_deny pop-up--close">
         <div class="pop-up--wrapper">
             <h4>Отказ от задания</h4>
             <p class="pop-up-text">
@@ -108,14 +111,14 @@ $user = Yii::$app->user->identity;
                 Вы собираетесь отказаться от выполнения этого задания.<br>
                 Это действие плохо скажется на вашем рейтинге и увеличит счетчик проваленных заданий.
             </p>
-            <a href="<?= Url::toRoute('task/deny-task') ?>" class="button button--pop-up button--orange">Отказаться</a>
+            <a href="<?= Url::toRoute(['task/deny-task', 'id' => $task->id]) ?>" class="button button--pop-up button--orange">Отказаться</a>
             <div class="button-container">
                 <button class="button--close" type="button">Закрыть окно</button>
             </div>
         </div>
     </section>
 
-    <section class="pop-up pop-up--completion pop-up--close">
+    <section class="pop-up pop-up--act_complete pop-up--close">
         <div class="pop-up--wrapper">
             <h4>Завершение задания</h4>
             <p class="pop-up-text">
@@ -124,7 +127,7 @@ $user = Yii::$app->user->identity;
             </p>
 
             <div class="completion-form pop-up--form regular-form">
-                <?php $form = ActiveForm::begin(['action' => '?r=task/complete-task']) ?>
+                <?php $form = ActiveForm::begin(['action' => Url::toRoute(['task/complete-task', 'id' => $task->id])]) ?>
 
                 <?= $form
                     ->field($feedback, 'comment')
@@ -132,12 +135,8 @@ $user = Yii::$app->user->identity;
                     ->label('Ваш комментарий', ['for' => 'completion-comment', 'class' => 'control-label'])
                 ?>
 
-                <p class="completion-head control-label">Оценка работы</p>
-                <div class="stars-rating big active-stars">
-                    <span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
-                </div>
-
-                <?= Html::submitInput('Завершить', ['class' => 'button button--pop-up button--blue']) ?>
+                <?= $form->field($feedback, 'rating', ['template' => '{label}{input}' . UiHelper::showStarRating(0,'big', 5, true)])->hiddenInput()?>
+                <input type="submit" class="button button--pop-up button--blue" value="Завершить">
 
                 <?php ActiveForm::end() ?>
             </div>
@@ -148,7 +147,7 @@ $user = Yii::$app->user->identity;
         </div>
     </section>
 
-    <section class="pop-up pop-up--act_response pop-up--close">
+    <section class="pop-up pop-up--act-respond pop-up--close">
         <div class="pop-up--wrapper">
             <h4>Добавление отклика к заданию</h4>
             <p class="pop-up-text">
@@ -157,7 +156,7 @@ $user = Yii::$app->user->identity;
             </p>
 
             <div class="addition-form pop-up--form regular-form">
-                <?php $form = ActiveForm::begin(['action' => '?r=task/response-task']) ?>
+                <?php $form = ActiveForm::begin(['action' => Url::toRoute(['task/response-task', 'id' => $task->id])]) ?>
 
                 <?= $form
                     ->field($response, 'comment')
@@ -171,7 +170,7 @@ $user = Yii::$app->user->identity;
                     ->label('Стоимость', ['for' => 'addition-price', 'class' => 'control-label'])
                 ?>
 
-                <?= Html::submitInput('Завершить', ['class' => 'button button--pop-up button--blue']) ?>
+                <input type="submit" class="button button--pop-up button--blue" value="Завершить">
 
                 <?php ActiveForm::end() ?>
             </div>
@@ -180,5 +179,3 @@ $user = Yii::$app->user->identity;
             </div>
         </div>
     </section>
-
-<?php $this->registerJsFile('@web/js/main.js'); ?>

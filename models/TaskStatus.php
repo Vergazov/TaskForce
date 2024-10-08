@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
 class TaskStatus extends ActiveRecord
 {
     public const STATUS_ACTIVE = 1;
-    public const STATUS_INACTIVE = 2;
+    public const STATUS_IN_PROGRESS = 3;
 
     /**
      * {@inheritdoc}
@@ -34,6 +34,7 @@ class TaskStatus extends ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['name'], 'safe'],
             [['name'], 'string', 'max' => 50],
         ];
     }

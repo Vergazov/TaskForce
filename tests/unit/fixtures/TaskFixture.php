@@ -2,6 +2,7 @@
 
 namespace tests\unit\fixtures;
 
+use app\models\TaskStatus;
 use yii\test\ActiveFixture;
 use app\models\Task;
 
@@ -14,7 +15,6 @@ class TaskFixture extends ActiveFixture
         SpecializationFixture::class,
         TaskStatusFixture::class,
         UserStatusFixture::class,
-        UserFixture::class,
     ];
 
 }
